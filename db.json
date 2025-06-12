@@ -1,0 +1,48 @@
+{
+  "users": [
+    {
+      "email": "test34@gmail.com",
+      "name": "test34",
+      "password": "Test@123",
+      "role": "user",
+      "id": 1
+    },
+    {
+      "email": "ronakgami@gmail.com",
+      "name": "ronak",
+      "password": "Test@123",
+      "role": "user",
+      "id": 2
+    },
+    {
+      "email": "ronakgami@gmail.com",
+      "name": "ronak",
+      "password": "Test@123",
+      "role": "user",
+      "id": 3
+    },
+    {
+      "email": "pal@gmail.com",
+      "name": "Pal",
+      "password": "Test@123",
+      "role": "user",
+      "id": 4
+    },
+    {
+      "email": "pal@gmail.com",
+      "name": "Pal",
+      "password": "Test@123",
+      "role": "user",
+      "id": 5
+    },
+    {
+      "name": "jeel",
+      "email": "jel@gmail.com",
+      "password": "Test@123",
+      "role": "user",
+      "createdAt": "2025-06-11T07:57:59.727Z",
+      "id": 6
+    }
+  ],
+  "tasks": []
+}
