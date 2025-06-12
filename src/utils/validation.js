@@ -17,7 +17,7 @@ export const registerValidation = Yup.object().shape({
     password: Yup.string()
         .matches(
             PASSWORD_REGEX,
-            'Please enter password with at least 8 characters, one uppercase, one lowercase, one number and one special character.'
+            'Please enter password.'
         )
         .required('Please enter password.'),
     confirmPassword: Yup.string()

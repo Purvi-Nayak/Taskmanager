@@ -42,7 +42,79 @@
       "role": "user",
       "createdAt": "2025-06-11T07:57:59.727Z",
       "id": 6
+    },
+    {
+      "name": "rohan",
+      "email": "rohan@gmail.com",
+      "password": "Test@123",
+      "role": "user",
+      "createdAt": "2025-06-12T08:42:16.726Z",
+      "id": 7
     }
   ],
-  "tasks": []
+  "tasks": [
+    {
+      "title": "df ddsf",
+      "description": "dsfas dsf fsdfsdf",
+      "status": "Completed",
+      "dueDate": "2025-06-26",
+      "userId": 7,
+      "createdAt": "2025-06-12T09:16:12.695Z",
+      "id": 3
+    },
+    {
+      "title": "vxcv cvvxz zxcv",
+      "description": "xcvzx cxvz xcvxv",
+      "status": "Completed",
+      "dueDate": "2025-06-26",
+      "userId": 7,
+      "createdAt": "2025-06-12T09:31:09.908Z",
+      "id": 4
+    },
+    {
+      "title": "fgd fdgd f fdg fg",
+      "description": "fdg df fg g",
+      "status": "In Progress",
+      "dueDate": "2025-06-18",
+      "userId": 7,
+      "createdAt": "2025-06-12T09:34:59.242Z",
+      "id": 5
+    },
+    {
+      "title": "dsf df dsf sdfdsfsdfs",
+      "description": "dsfsdf dsf ds",
+      "status": "In Progress",
+      "dueDate": "2025-06-19",
+      "userId": 7,
+      "createdAt": "2025-06-12T10:12:45.484Z",
+      "id": 6
+    },
+    {
+      "title": "node",
+      "description": "fdgfd fdg sd vb fb ",
+      "status": "Completed",
+      "dueDate": "2025-06-20",
+      "userId": 7,
+      "createdAt": "2025-06-12T10:40:04.147Z",
+      "id": 7
+    },
+    {
+      "title": "fgf fdgdf",
+      "description": "dfgdfg fg fg fdg",
+      "status": "Completed",
+      "dueDate": "2025-06-27",
+      "userId": 7,
+      "createdAt": "2025-06-12T10:58:58.897Z",
+      "id": 8
+    },
+    {
+      "title": "ghf",
+      "description": "gfh gfh gfhfg",
+      "status": "Completed",
+      "dueDate": "2025-06-26",
+      "userId": 7,
+      "createdAt": "2025-06-12T12:23:26.373Z",
+      "id": 9
+    }
+  ]
 }

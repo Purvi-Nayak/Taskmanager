@@ -22,7 +22,7 @@ const Header = ({ userName = "Admin" }) => {
     navigate(URLS.LOGIN);
   };
   return (
-    <header className="flex items-center justify-between bg-white px-6 py-3 shadow-sm">
+    <header className="flex items-center justify-between bg-white px-6 py-3 shadow-sm font-roboto">
    
 
       <div
@@ -31,9 +31,12 @@ const Header = ({ userName = "Admin" }) => {
         role="button"
         tabIndex={0}
       >
-        <FaThumbtack className="text-xl text-black" />
+        <FaThumbtack className="text-xl text-black" 
+        onClick={toggleDrawer}
+        role="button"
+        aria-lable="Toggle Drawer"/>
         <div>
-          <div className="font-bold text-lg text-gray-900">TaskMaster</div>
+          <div className="font-bold text-3xl text-black">TaskMaster</div>
           <div className="text-xs text-blue-600">{userName}</div>
         </div>
         {/* Tooltip */}
@@ -42,7 +45,7 @@ const Header = ({ userName = "Admin" }) => {
         </span>
       </div>
       {/* Center: Title (optional, can remove if not needed) */}
-      <div className="font-semibold text-lg text-gray-900 hidden md:block">
+      <div className="font-bold text-3xl text-black">
         TaskMaster
       </div>
 

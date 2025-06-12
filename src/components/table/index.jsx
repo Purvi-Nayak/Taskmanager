@@ -1,41 +1,99 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-const Table = ({ headers, children, className }) => {
+const Table = ({ 
+  columns = [], 
+  data = [], 
+  className = '',
+  pagination=
+    {
+      currentPage : 1,
+      totalPages :1,
+      Pagesize: 10,
+      totalItems : 0,
+      onPageChange : () => {}
+    },
+  
+  emptyMessage = 'No data available'
+}) => {
+  
+  if (!Array.isArray(columns) || !Array.isArray(data)) {
+    console.error('Table: columns and data must be arrays');
+    return null;
+  }
+
+ 
+  const processedData = useMemo(() => {
+    return data.map((row, index) => ({
+      ...row,
+      rowIndex: index + 1 
+    }));
+  }, [data]);
+
+  // Log data with indices
+  console.log('Table Data :', processedData);
+ 
   return (
-    <div className="bg-white-pure rounded-lg shadow overflow-hidden">
-      <table className="min-w-full divide-y divide-secondary-500">
-        <thead className="bg-secondary-500">
+    <div className={`bg-white rounded-lg shadow overflow-hidden ${className}`}>
+      <table className="min-w-full divide-y divide-gray-200">
+        <thead className="bg-gray-100">
           <tr>
-            {headers.map((header, index) => (
+            {/* Optional Index Column */}
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+              #
+            </th>
+            {columns.map((column) => (
               <th
-                key={index}
-                className="px-6 py-3 text-left text-xs font-roboto font-medium text-white-pure uppercase tracking-wider"
+                key={column.id}
+                className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                style={{ width: column.width }}
               >
-                {header}
+                {column.label}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white-pure divide-y divide-secondary-500">
-          {children}
+        <tbody className="bg-white divide-y divide-gray-200">
+          {processedData.length > 0 ? (
+            processedData.map((row, rowIndex) => (
+              <tr 
+                key={row.id || `row-${rowIndex}`} 
+                className="hover:bg-gray-50"
+              >
+                {/* Row Index Cell */}
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {row.rowIndex}
+                </td>
+                {/* Data Cells */}
+                {columns.map((column) => (
+                  <td 
+                    key={`${row.id}-${column.id}`}
+                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-800"
+                  >
+                    {column.render ? 
+                      column.render({ row, rowIndex }) : 
+                      column.field_name ? 
+                        row[column.field_name] : 
+                        '--'
+                    }
+                  </td>
+                ))}
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td 
+                colSpan={columns.length + 1} 
+                className="px-6 py-4 text-center text-gray-500"
+              >
+                {emptyMessage}
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
+
     </div>
   );
 };
-
-// Reusable table row component
-export const TableRow = ({ children, className }) => (
-  <tr className={`hover:bg-secondary-500/5 transition-colors ${className}`}>
-    {children}
-  </tr>
-);
-
-// Reusable table cell component
-export const TableCell = ({ children, className }) => (
-  <td className={`px-6 py-4 font-roboto ${className}`}>
-    {children}
-  </td>
-);
 
 export default Table;

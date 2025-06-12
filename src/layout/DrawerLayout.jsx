@@ -29,7 +29,7 @@ const DrawerLayout = ({ children }) => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-7 bg-gray-100">
       {/* Drawer */}
       <div 
         className={`fixed inset-y-0 left-0 transform ${

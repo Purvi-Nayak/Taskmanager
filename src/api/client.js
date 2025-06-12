@@ -53,7 +53,8 @@ export const api = {
         getUserTasks: ({userId, ...config}) => client({ 
             method: METHODS.GET, 
             url: `/tasks?userId=${userId}`, 
-            ...config 
+            ...config ,
+      
         }),
         get:({
             id, ...config
@@ -71,7 +72,7 @@ export const api = {
             data: {
                 ...data,
                 createdAt: new Date().toISOString(),
-                status: 'Pending' // Default status
+             
             }, 
             ...config 
         }),
@@ -87,19 +88,24 @@ export const api = {
         method: METHODS.DELETE, 
         url: `/tasks/${id}`
     }),
-    update: ({ id, data }) => client({
-    method: 'PUT', // or 'PATCH' depending on your API
-    url: `/tasks/${id}`,
-    data: data,
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }),
+
+    update: ({ data, taskId }) => 
+        client({
+            method: METHODS.PUT, 
+            url: `/tasks/${taskId}`, 
+            data: {
+                ...data,
+                updatedAt: new Date().toISOString(),
+            }
+        }),
+
+
         // Search and filter
         search: ({query, userId, ...config}) => client({ 
             method: METHODS.GET, 
             url: `/tasks?userId=${userId}&title_like=${query}`, 
             ...config 
         }),
+
     }
 }

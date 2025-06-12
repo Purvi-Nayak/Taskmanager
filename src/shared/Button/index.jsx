@@ -1,7 +1,7 @@
-import React from 'react';
+import { classNames } from '../../utils/functions';
 
 const CustomButton = ({
-  text,
+  label,
   type = 'button',
   onClick,
   className = '',
@@ -12,10 +12,10 @@ const CustomButton = ({
     type={type}
     onClick={onClick}
     disabled={disabled}
-    className={`px-4 py-2 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors disabled:bg-gray-400 ${className}`}
+    className={classNames('flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white-pure shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:opacity-50', className)}
     {...props}
   >
-    {text}
+    {label}
   </button>
 );
 

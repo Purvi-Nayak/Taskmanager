@@ -1,56 +1,59 @@
-import React, { useState } from 'react';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { useState, useCallback } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { classNames } from "../../utils/functions";
 
 const InputText = ({
-  label,
   name,
-  type = 'text',
-  value,
-  onChange,
+  register,
   error,
-  placeholder,
+  startAdornment,
+  endAdornment,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleToggle = useCallback(() => {
+    setShowPassword((prev) => !prev);
+  }, []);
+
   const inputType =
-    type === 'password' ? (showPassword ? 'text' : 'password') : type;
+    props.type === "password"
+      ? showPassword
+        ? "text"
+        : "password"
+      : props.type;
 
   return (
-    <div className="mb-4">
-      {label && (
-        <label htmlFor={name} className="block mb-1 font-medium text-gray-700">
-          {label}
-        </label>
+    <div className="relative">
+      {startAdornment && (
+        <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+          {startAdornment}
+        </div>
       )}
-      <div className="relative">
-        <input
-          id={name}
-          name={name}
-          type={inputType}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className={`w-full px-4 py-2 border rounded focus:outline-none transition-colors ${
-            error
-              ? 'border-red-500 focus:border-red-500'
-              : 'border-gray-300 focus:border-blue-500'
-          }`}
-          {...props}
-        />
-        {type === 'password' && (
-          <span
-            className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
-            onClick={() => setShowPassword((prev) => !prev)}
-            tabIndex={0}
-            role="button"
-            aria-label={showPassword ? 'Hide password' : 'Show password'}
-          >
-            {showPassword ? <FaEyeSlash /> : <FaEye />}
-          </span>
+      <input
+        id={name}
+        {...register(name)}
+        {...props}
+        error={error}
+        type={inputType}
+        className={classNames(
+          "block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 outline-offset-1 outline-gray-300 border border-gray-300 placeholder:text-gray-400 focus:outline-2 focus:outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
         )}
-      </div>
-      {error && <p className="mt-1 text-sm text-red-600">{error}</p>}
+      />
+      {endAdornment && (
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+          {endAdornment}
+        </div>
+      )}
+      {props.type === "password" && (
+        <button
+          type="button"
+          onClick={handleToggle}
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500"
+        >
+          {showPassword ? <FaEyeSlash /> : <FaEye />}
+        </button>
+      )}
     </div>
   );
 };
