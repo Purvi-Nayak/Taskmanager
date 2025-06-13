@@ -19,7 +19,7 @@ const DrawerLayout = ({ children }) => {
   const menuItems = [
     { icon: <FaHome className="w-5 h-5" />, label: 'Dashboard', path: '/' },
     { icon: <FaTasks className="w-5 h-5" />, label: 'Tasks', path: '/tasks' },
-    { icon: <FaUsers className="w-5 h-5" />, label: 'Users', path: '/users' },
+    // { icon: <FaUsers className="w-5 h-5" />, label: 'Users', path: '/users' },
     {
       icon: <FaSignOutAlt className="w-5 h-5" />,
       label: 'Logout',
@@ -29,13 +29,28 @@ const DrawerLayout = ({ children }) => {
   ];
 
   return (
-    <div className="flex h-7 bg-gray-100">
+    <div className="min-h-screen">
+      {/* Main Layout Container with transition */}
+      <div className={`transition-all duration-300 ease-in-out ${
+        isDrawerOpen ? 'ml-64' : 'ml-0'
+      }`}>
+        {/* Header container */}
+        <div className="fixed top-0 right-0 left-0 z-10 transition-all duration-300 ease-in-out">
+          <header className="bg-white shadow-sm">
+            {/* Your header content */}
+          </header>
+        </div>
+
+        {/* Main content with padding for header */}
+        <div className="pt-16"> {/* Adjust based on your header height */}
+          {children}
+        </div>
+      </div>
+
       {/* Drawer */}
-      <div 
-        className={`fixed inset-y-0 left-0 transform ${
-          isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
-        } w-64 bg-white shadow-lg transition-transform duration-300 ease-in-out z-20`}
-      >
+      <div className={`fixed top-0 left-0 h-full w-64 bg-white-pure transform transition-transform duration-300 ease-in-out z-20 ${
+        isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
+      }`}>
         <div className="p-6">
           <h2 className="text-xl font-semibold text-gray-800 mb-6">Menu</h2>
           <nav className="space-y-2">
@@ -73,11 +88,6 @@ const DrawerLayout = ({ children }) => {
           onClick={toggleDrawer}
         />
       )}
-
-      {/* Main Content */}
-      <div className="flex-1 pl-0 lg:pl-64">
-        {children}
-      </div>
     </div>
   );
 };

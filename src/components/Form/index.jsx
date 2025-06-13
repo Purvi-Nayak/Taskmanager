@@ -1,17 +1,20 @@
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addTask,
+  updateTask,
+  setModalOpen,
+} from "../../redux/slices/taskSlice";
+import { taskValidation } from "../../utils/validation";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import FormGroup from "../../shared/FormGroup";
+import CustomButton from "../../shared/Button";
+import { api } from "../../api/client";
+import { useState } from "react";
 
-import { useDispatch, useSelector } from 'react-redux';
-import { addTask, updateTask, setModalOpen } from '../../redux/slices/taskSlice';
-import { taskValidation } from '../../utils/validation';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import FormGroup from '../../shared/FormGroup';
-import CustomButton from '../../shared/Button';
-import { api } from '../../api/client';
-import { useState } from 'react';
-
-const TaskForm = ({ initialValues,onSubmit: onSubmitProp}) => {
+const TaskForm = ({ initialValues ,onSubmit: onSubmitProp }) => {
   const dispatch = useDispatch();
-  const currentUser = useSelector(state => state.users.user);
+  const currentUser = useSelector((state) => state.users.user);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -20,20 +23,20 @@ const TaskForm = ({ initialValues,onSubmit: onSubmitProp}) => {
     formState: { errors, isSubmitting },
   } = useForm({
     resolver: yupResolver(taskValidation),
-    defaultValues: initialValues
+    defaultValues: initialValues,
   });
 
- const onSubmit = async (values) => {
+  const onSubmit = async (data) => {
     try {
       const taskData = {
-        ...values,
+        ...data,
         userId: currentUser.id,
       };
 
-      const response = initialValues.id 
-        ? await api.TASKS.update({ data: taskData })
+      const response = initialValues.id
+        ? await api.TASKS.update({ data: taskData, taskId: initialValues.id })
         : await api.TASKS.create({ data: taskData });
-
+      console.log("Task response:", response.data);
       if (response.data) {
         if (initialValues.id) {
           dispatch(updateTask(response.data));
@@ -41,10 +44,10 @@ const TaskForm = ({ initialValues,onSubmit: onSubmitProp}) => {
           dispatch(addTask(response.data));
         }
         dispatch(setModalOpen(false));
-        onSubmitProp(); // Refresh task list
+        onSubmitProp();
       }
     } catch (error) {
-      console.error('Error handling task:', error);
+      console.error("Error handling task:", error);
     }
   };
 
@@ -52,32 +55,31 @@ const TaskForm = ({ initialValues,onSubmit: onSubmitProp}) => {
     dispatch(setModalOpen(false));
   };
 
-
- 
-const handleupdate = async (values, { setSubmitting }) => {
-    try {
-      const response = await api.TASKS.update({
-        data: {
-          ...values,
-          userId: currentUser.id,
-        }
-      });
-      console.log('Updating task with values:', response)
-      console.log('Task updated:', response.data);
-      if (response.data) {
-        dispatch(updateTask(response.data));
-        dispatch(setModalOpen(false));
-        onSubmit(); 
-        setIsModalOpen(false); 
-      }
-    } catch (error) {
-      console.error('Error updating task:', error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  // const handleupdate = async (data, { setSubmitting }) => {
+  //   try {
+  //     console.log("---------------Updating -----------------:", currentUser.id);
+  //     const response = await api.TASKS.update({
+  //       data: {
+  //         ...data,
+  //         userId: currentUser.id,
+  //       },
+  //     });
+  //     console.log("Updating task with values:", response);
+  //     console.log("Task updated:", response.data);
+  //     if (response.data) {
+  //       dispatch(updateTask(response.data));
+  //       dispatch(setModalOpen(false));
+  //       onSubmit();
+  //       setIsModalOpen(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error updating task:", error);
+  //   } finally {
+  //     setSubmitting(false);
+  //   }
+  // };
   return (
-<div className="bg-white-pure p-6 rounded-lg">
+    <div className="bg-white-pure p-6 rounded-lg">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <FormGroup
           label="Title"
@@ -92,9 +94,13 @@ const handleupdate = async (values, { setSubmitting }) => {
             Description
           </label>
           <textarea
-            {...register('description')}
+            {...register("description")}
             className={`w-full px-4 py-2 rounded-md border font-roboto
-              ${errors.description ? 'border-status-error-main' : 'border-neutral-main'}
+              ${
+                errors.description
+                  ? "border-status-error-main"
+                  : "border-neutral-main"
+              }
               focus:outline-none focus:border-primarymain`}
             rows="4"
             placeholder="Enter task description"
@@ -119,9 +125,13 @@ const handleupdate = async (values, { setSubmitting }) => {
             Status
           </label>
           <select
-            {...register('status')}
+            {...register("status")}
             className={`w-full px-4 py-2 rounded-md border font-roboto
-              ${errors.status ? 'border-status-error-main' : 'border-neutral-main'}
+              ${
+                errors.status
+                  ? "border-status-error-main"
+                  : "border-neutral-main"
+              }
               focus:outline-none focus:border-primarymain`}
           >
             <option value="">Select status</option>

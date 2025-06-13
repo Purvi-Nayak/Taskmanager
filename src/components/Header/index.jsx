@@ -12,17 +12,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const Header = ({ userName = "Admin" }) => {
-  const { toggleDrawer } = useDrawer();
+  const { isDrawerOpen,toggleDrawer } = useDrawer();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state.users.user);
-
+``
   const handleLogout = () => {
     dispatch(logout());
     navigate(URLS.LOGIN);
   };
   return (
-    <header className="flex items-center justify-between bg-white px-6 py-3 shadow-sm font-roboto">
+     <header className={`flex items-center justify-between bg-primarylight px-6 py-3 shadow-sm font-roboto transition-all duration-300 ease-in-out ${
+      isDrawerOpen ? 'pl-64' : 'pl-6'
+    }`}>
    
 
       <div

@@ -99,26 +99,66 @@ const headers = ['Title', 'Description', 'Date','Status', 'Actions'];
     setIsModalOpen(false);
     dispatch(setEditingTask(null));
   };
-
-  // Fetch tasks
   const fetchTasks = async () => {
-    try {
-      setLoading(true);
-      const response = await api.TASKS.getUserTasks({
-        userId: currentUser.id
-    
-      });
-      console.log("Fetch tasks response:", response.data);
-      console.log("Fetch tasks request data:", response)
-      if (response.data) {
-        setTasks(response.data);
-      }
-    } catch (error) {
-      console.error('Error fetching tasks:', error);
-    } finally {
-      setLoading(false);
+  try {
+    setLoading(true);
+    const response = await api.TASKS.getUserTasks({
+      userId: currentUser.id
+    });
+    console.log("Fetch tasks response:", response.data);
+
+    if (response.data) {
+      setTasks(response.data); // No patching needed!
     }
-  };
+  } catch (error) {
+    console.error('Error fetching tasks:', error);
+  } finally {
+    setLoading(false);
+  }
+};
+// const fetchTasks = async () => {
+//   try {
+//     setLoading(true);
+//     const response = await api.TASKS.getUserTasks({
+//       userId: currentUser.id
+//     });
+//     console.log("Fetch tasks response:", response.data);
+
+//     if (response.data) {
+//       // Patch: Add dummy fields if missing
+//       const patched = response.data.map((task, idx) => ({
+//         title: task.title || `Task ${task.id}`,
+//         description: task.description || `Description for task ${task.id}`,
+//         dueDate: task.dueDate || `2025-06-${10 + idx}`,
+//         ...task
+//       }));
+//       setTasks(patched);
+//     }
+//   } catch (error) {
+//     console.error('Error fetching tasks:', error);
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+  // Fetch tasks
+  // const fetchTasks = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await api.TASKS.getUserTasks({
+  //       userId: currentUser.id
+    
+  //     });
+  //     console.log("Fetch tasks response:", response.data);
+  //     console.log("Fetch tasks request data:", response)
+  //     if (response.data) {
+  //       setTasks(response.data);
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching tasks:', error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
   console.log("Current user:", currentUser);
   console.log("Tasks:", tasks);
 useEffect(() => {
@@ -165,11 +205,11 @@ const handleEdit = async (task) => {
     dispatch(setError(error.message));
   }
 };
-const handleUpdateTask = async (taskData) => {
+const handleUpdateTask = async (data) => {
   try {
     // First, ensure we have all required data
     const updatedTask = {
-      ...taskData,
+      ...data,
       id: editingTask.id,
       userId: currentUser.id,
       updatedAt: new Date().toISOString()
@@ -235,7 +275,8 @@ const handleAddTask = async (taskData) => {
     const response = await api.TASKS.getUserTasks({ 
       data: newTask
     });
-    
+    console.log("Add task response:", response.data);
+    console.log("Add task request data:", response);
     if (response.data) {
       dispatch(addTask(response.data));
       setIsModalOpen(false);
@@ -246,16 +287,16 @@ const handleAddTask = async (taskData) => {
   }
 };
   return (
-    <div className="p-6">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-semibold text-gray-900">My Tasks</h1>
-        <CustomButton
-          label="New Task"
-          onClick={handleOpenModal} // Use handleOpenModal here
-          className=""
-          icon={<FaPlus />}
-        />
-      </div>
+<div className="p-6 w-full">
+  <div className="flex justify-between items-center mb-6">
+    <h1 className="text-2xl font-semibold text-gray-900">My Tasks</h1>
+    <CustomButton
+      label="New Task"
+      onClick={handleOpenModal} 
+      className="px-2 py-1 text-xs font-medium bg-primarymain hover:bg-primarydark text-white rounded-md w-20 flex items-center justify-center gap-0.5 shadow-sm transition-all duration-200 hover:scale-[1.02]"
+      icon={<FaPlus className="w-2 h-2" />}
+    />
+  </div>
 
       <div className="mb-4 max-w-xs">
         <SearchBox
@@ -272,8 +313,7 @@ const handleAddTask = async (taskData) => {
           columns={columns}
           data={tasks}
           emptyMessage="No tasks found"
-        
-
+          className="w-full"
         />
       )}
 

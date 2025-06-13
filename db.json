@@ -50,71 +50,65 @@
       "role": "user",
       "createdAt": "2025-06-12T08:42:16.726Z",
       "id": 7
+    },
+    {
+      "name": "ioio",
+      "email": "iooo@yopmail.com",
+      "password": "Test@123",
+      "role": "admin",
+      "createdAt": "2025-06-13T05:51:23.675Z",
+      "id": 8
+    },
+    {
+      "name": "PAYAL",
+      "email": "payal@yopmail.com",
+      "password": "Test@123",
+      "role": "user",
+      "createdAt": "2025-06-13T11:04:17.170Z",
+      "id": 9
+    },
+    {
+      "name": "ronak",
+      "email": "ronakgami@gmail.com",
+      "password": "Test@123",
+      "confirmPassword": "Test@123",
+      "role": "users",
+      "id": 10
     }
   ],
   "tasks": [
     {
-      "title": "df ddsf",
-      "description": "dsfas dsf fsdfsdf",
-      "status": "Completed",
-      "dueDate": "2025-06-26",
-      "userId": 7,
-      "createdAt": "2025-06-12T09:16:12.695Z",
-      "id": 3
+      "id": 3,
+      "userId": 4,
+      "updatedAt": "2025-06-13T13:00:57.259Z"
     },
     {
-      "title": "vxcv cvvxz zxcv",
-      "description": "xcvzx cxvz xcvxv",
-      "status": "Completed",
-      "dueDate": "2025-06-26",
-      "userId": 7,
-      "createdAt": "2025-06-12T09:31:09.908Z",
-      "id": 4
-    },
-    {
-      "title": "fgd fdgd f fdg fg",
-      "description": "fdg df fg g",
+      "title": "hfgh dghfh",
+      "description": "gfh fghf ghfghfghwffwawatewaetweatwaetawetaet",
       "status": "In Progress",
-      "dueDate": "2025-06-18",
-      "userId": 7,
-      "createdAt": "2025-06-12T09:34:59.242Z",
+      "dueDate": "2025-06-27",
+      "userId": 4,
+      "createdAt": "2025-06-13T11:58:24.552Z",
+      "id": 4,
+      "rowIndex": 4
+    },
+    {
+      "title": "jkhj",
+      "description": "jhkhjk hjk jk",
+      "status": "In Progress",
+      "dueDate": "2025-06-25",
+      "userId": 4,
+      "createdAt": "2025-06-13T12:48:47.988Z",
       "id": 5
     },
     {
-      "title": "dsf df dsf sdfdsfsdfs",
-      "description": "dsfsdf dsf ds",
+      "title": "jkhj",
+      "description": "jhkhjk hjk jk",
       "status": "In Progress",
-      "dueDate": "2025-06-19",
-      "userId": 7,
-      "createdAt": "2025-06-12T10:12:45.484Z",
+      "dueDate": "2025-06-25",
+      "userId": 4,
+      "createdAt": "2025-06-13T12:49:25.149Z",
       "id": 6
-    },
-    {
-      "title": "node",
-      "description": "fdgfd fdg sd vb fb ",
-      "status": "Completed",
-      "dueDate": "2025-06-20",
-      "userId": 7,
-      "createdAt": "2025-06-12T10:40:04.147Z",
-      "id": 7
-    },
-    {
-      "title": "fgf fdgdf",
-      "description": "dfgdfg fg fg fdg",
-      "status": "Completed",
-      "dueDate": "2025-06-27",
-      "userId": 7,
-      "createdAt": "2025-06-12T10:58:58.897Z",
-      "id": 8
-    },
-    {
-      "title": "ghf",
-      "description": "gfh gfh gfhfg",
-      "status": "Completed",
-      "dueDate": "2025-06-26",
-      "userId": 7,
-      "createdAt": "2025-06-12T12:23:26.373Z",
-      "id": 9
     }
   ]
 }

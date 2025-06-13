@@ -30,11 +30,7 @@ const AdminDrawerLayout = ({ children }) => {
     label: 'Users',   
      path: URLS.USERS 
  },
- {
-    icon: <FaTasks className="w-5 h-5" />,
-    label: 'Tasks',
-    path: URLS.TASKS
- },
+
   ];
 
   return (

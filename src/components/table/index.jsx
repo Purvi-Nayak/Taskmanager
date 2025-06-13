@@ -30,21 +30,20 @@ const Table = ({
   }, [data]);
 
   // Log data with indices
-  console.log('Table Data :', processedData);
  
   return (
     <div className={`bg-white rounded-lg shadow overflow-hidden ${className}`}>
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-100">
-          <tr>
+        <thead className="bg-primarymain">
+          <tr className='text-white-pure'>
             {/* Optional Index Column */}
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+            <th className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider">
               #
             </th>
             {columns.map((column) => (
               <th
                 key={column.id}
-                className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider"
                 style={{ width: column.width }}
               >
                 {column.label}
