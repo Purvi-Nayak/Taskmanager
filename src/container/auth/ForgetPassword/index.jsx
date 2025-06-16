@@ -1,8 +1,8 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
 import { Link } from 'react-router-dom';
-import InputText from '../../../shared/InputText';
-import CustomButton from '../../../shared/Button';
+import InputText from '../../../shared/inputText';
+import CustomButton from '../../../shared/custombutton';
 import { forgetPasswordValidation } from '../../../utils/validation';
 
 const ForgetPassword = () => {
@@ -63,7 +63,7 @@ const ForgetPassword = () => {
               />
 
               <CustomButton
-                text="Reset Password"
+                label="Reset Password"
                 type="submit"
                 className="w-full"
                 disabled={isSubmitting}

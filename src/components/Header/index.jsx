@@ -33,21 +33,21 @@ const Header = ({ userName = "Admin" }) => {
         role="button"
         tabIndex={0}
       >
-        <FaThumbtack className="text-xl text-black" 
+        <FaThumbtack className="text-xl text-white-pure" 
         onClick={toggleDrawer}
         role="button"
-        aria-lable="Toggle Drawer"/>
+         aria-label="Toggle Drawer" />
         <div>
-          <div className="font-bold text-3xl text-black">TaskMaster</div>
+          <div className="font-bold text-3xl  text-white-pure hidden md:block">TaskMaster</div>
           <div className="text-xs text-blue-600">{userName}</div>
         </div>
         {/* Tooltip */}
-        <span className="absolute left-10 top-10 z-10 whitespace-nowrap bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <span className="absolute left-10 top-10 z-10 whitespace-nowrap bg-white-pure text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
           Open Drawer
         </span>
       </div>
       {/* Center: Title (optional, can remove if not needed) */}
-      <div className="font-bold text-3xl text-black">
+      <div className="font-bold text-3xl text-white-pure hidden md:block">
         TaskMaster
       </div>
 
@@ -56,17 +56,18 @@ const Header = ({ userName = "Admin" }) => {
         <div>
           <img src={IMAGES.Task} alt="Task Manager Logo" className="w-8 h-8 " />
         </div>
-        <button className="relative group p-2 rounded hover:bg-gray-100 text-gray-500">
-          <FaSignOutAlt size={18} onClick={handleLogout} />
-          <span className="absolute left-1/2 -translate-x-1/2 top-10 z-10 whitespace-nowrap bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+        <button className="relative group p-2 rounded hover:bg-neutral-dark text-black">
+          <FaSignOutAlt size={18} onClick={handleLogout} color='white'/>
+          <span className="absolute  top-10  bg-white-pure text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             Logout
           </span>
         </button>
 
-        <button className="p-2 rounded hover:bg-gray-100 text-gray-500">
-          <FaQuestionCircle size={18} />
+        <button className="p-2 rounded hover:bg-neutral-dark text-white-pure ">
+          <FaQuestionCircle size={18}  />
         </button>
-        <div className="w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold relative group p-2 hover:bg-gray-100 text-gray-500">
+        
+        <div className="w-9 h-9 rounded-full flex items-center justify-center text-lg font-bold relative group p-2 hover:bg-neutral-dark text-black">
           <img
             src={IMAGES.Profile}
             alt="User Avatar"
@@ -82,10 +83,10 @@ const Header = ({ userName = "Admin" }) => {
               opacity: currentUser?.role === "admin" ? 1 : 0.5,
             }}
           />
-          <span className="absolute left-1/2 -translate-x-1/2 top-10 z-10 whitespace-nowrap bg-black text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+          <span className="absolute  top-10  bg-white-pure text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
             {currentUser?.role === "admin"
               ? "Profile Settings"
-              : "Only admin can change profile"}
+              : "For admin "}
           </span>
         </div>
       </div>

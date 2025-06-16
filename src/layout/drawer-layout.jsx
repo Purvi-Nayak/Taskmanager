@@ -1,0 +1,147 @@
+// import React from 'react';
+// import { Link, useNavigate, useLocation } from 'react-router-dom';
+// import { FaHome, FaLandmark, FaSignOutAlt, FaTasks, FaUsers } from 'react-icons/fa';
+// import { useDrawer } from '../context/DrawerContext';
+// import { useDispatch } from 'react-redux';
+// import { logout } from '../redux/slices/userSlice';
+
+// const DrawerLayout = ({ children }) => {
+//   const { isDrawerOpen, toggleDrawer } = useDrawer();
+//   const dispatch = useDispatch();
+//   const navigate = useNavigate();
+//   const location = useLocation();
+
+//   const handleLogout = () => {
+//     dispatch(logout());
+//     navigate('/login');
+//   };
+
+//   const menuItems = [
+//     { icon: <FaHome className="w-5 h-5" />, label: 'Dashboard', path: '/' },
+//     { icon: <FaTasks className="w-5 h-5" />, label: 'Tasks', path: '/tasks' },
+//     // { icon: <FaUsers className="w-5 h-5" />, label: 'Users', path: '/users' },
+//     {
+//       icon: <FaSignOutAlt className="w-5 h-5" />,
+//       label: 'Logout',
+//       onClick: handleLogout
+//     },
+   
+//   ];
+
+//   return (
+//     <div className="min-h-screen">
+//       {/* Main Layout Container with transition */}
+//       <div className={`transition-all duration-300 ease-in-out ${
+//         isDrawerOpen ? 'ml-64' : 'ml-0'
+//       }`}>
+//         {/* Header container */}
+//         <div className="fixed top-0 right-0 left-0 z-10 transition-all duration-300 ease-in-out">
+//           <header className="bg-white shadow-sm">
+//             {/* Your header content */}
+//           </header>
+//         </div>
+
+//         {/* Main content with padding for header */}
+//         <div className="pt-16"> {/* Adjust based on your header height */}
+//           {children}
+//         </div>
+//       </div>
+
+//       {/* Drawer */}
+//       <div className={`fixed top-0 left-0 h-full w-64 bg-white-pure transform transition-transform duration-300 ease-in-out z-20 ${
+//         isDrawerOpen ? 'translate-x-0' : '-translate-x-full'
+//       }`}>
+//         <div className="p-6">
+//           <h2 className="text-xl font-semibold text-gray-800 mb-6">Menu</h2>
+//           <nav className="space-y-2">
+//             {menuItems.map((item, index) => (
+//               item.onClick ? (
+//                 <button
+//                   key={index}
+//                   onClick={item.onClick}
+//                   className="flex items-center space-x-3 px-4 py-3 w-full text-left text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors"
+//                 >
+//                   {item.icon}
+//                   <span className="font-medium">{item.label}</span>
+//                 </button>
+//               ) : (
+//                 <Link
+//                   key={index}
+//                   to={item.path}
+//                   className={`flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-colors ${
+//                     location.pathname === item.path ? 'bg-blue-50 text-blue-600' : ''
+//                   }`}
+//                 >
+//                   {item.icon}
+//                   <span className="font-medium">{item.label}</span>
+//                 </Link>
+//               )
+//             ))}
+//           </nav>
+//         </div>
+//       </div>
+
+//       {/* Overlay */}
+//       {isDrawerOpen && (
+//         <div 
+//           className="fixed inset-0 bg-black bg-opacity-50 z-10"
+//           onClick={toggleDrawer}
+//         />
+//       )}
+//     </div>
+//   );
+// };
+
+// export default DrawerLayout;
+
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { FaHome, FaTasks, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import { useDrawer } from '../context/DrawerContext';
+import { logout } from '../redux/slices/userSlice';
+import { URLS } from '../constant/urls';
+import DrawerMenu from '../components/Drawer';
+
+const DrawerLayout = ({ children }) => {
+  const { isDrawerOpen, toggleDrawer } = useDrawer();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const user = useSelector(state => state.users.user);
+  const isAdmin = user?.role === 'admin';
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate(URLS.LOGIN);
+  };
+
+  // Define menu items based on user role
+  const menuItems = isAdmin 
+    ? [
+        { icon: <FaHome className="w-5 h-5" />, label: 'Dashboard', path: URLS.ADMIN },
+        { icon: <FaUser className="w-5 h-5" />, label: 'Users', path: URLS.USERS },
+        { icon: <FaCog className="w-5 h-5" />, label: 'Settings', path: URLS.SETTINGS },
+        { icon: <FaSignOutAlt className="w-5 h-5" />, label: 'Logout', onClick: handleLogout }
+      ]
+    : [
+        { icon: <FaHome className="w-5 h-5" />, label: 'Dashboard', path: URLS.DASHBOARD },
+        { icon: <FaTasks className="w-5 h-5" />, label: 'Tasks', path: URLS.TASKS },
+        { icon: <FaSignOutAlt className="w-5 h-5" />, label: 'Logout', onClick: handleLogout }
+      ];
+
+  return (
+    <div className="min-h-screen">
+      <DrawerMenu
+        isOpen={isDrawerOpen}
+        toggleDrawer={toggleDrawer}
+        menuItems={menuItems}
+        title={isAdmin ? "Admin Menu" : "Menu"}
+      />
+      <div className={`transition-all duration-300 ease-in-out ${isDrawerOpen ? 'ml-64' : 'ml-0'}`}>
+        {children}
+      </div>
+    </div>
+  );
+};
+
+export default DrawerLayout;

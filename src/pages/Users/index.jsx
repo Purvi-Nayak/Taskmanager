@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Table from "../../components/table";
+import Table from "../../shared/table";
 import { api } from "../../api/client";
-import SearchBox from "../../shared/SearchText";
+import SearchBox from "../../shared/searchtext";
 import useDebounce from "../../hooks/useDebounce";
 
 const Users = () => {

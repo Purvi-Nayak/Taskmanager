@@ -8,8 +8,8 @@ import {
   addToUsersList,
 } from "../../../redux/slices/userSlice";
 import { api } from "../../../api/client";
-import FormGroup from "../../../shared/FormGroup";
-import CustomButton from "../../../shared/Button";
+import FormGroup from "../../../shared/formgroup";
+import CustomButton from "../../../shared/custombutton";
 import { registerValidation } from "../../../utils/validation";
 
 const Registration = () => {

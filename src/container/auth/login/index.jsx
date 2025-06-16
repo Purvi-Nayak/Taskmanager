@@ -5,11 +5,11 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUser, setToken, setError } from "../../../redux/slices/userSlice";
 import { api } from "../../../api/client";
-import CustomButton from "../../../shared/Button";
+import CustomButton from "../../../shared/custombutton";
 import { loginValidation } from "../../../utils/validation";
 import { Link } from "react-router-dom";
-import CustomModal from "../../../components/Modal";
-import FormGroup from "../../../shared/FormGroup";
+import CustomModal from "../../../shared/custommodal";
+import FormGroup from "../../../shared/formgroup";
 import Checkbox from "../../../shared/checkbox";
 
 const Login = () => {

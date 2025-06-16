@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import{IMAGES} from '../../assets/index';
-import CustomButton from '../../shared/Button';
+import CustomButton from '../../shared/custombutton';
 
 const NotFound = () => {
   return (
@@ -23,7 +23,7 @@ const NotFound = () => {
         </p>
         <Link to="/">
           <CustomButton
-            text="Back to Home"
+            label="Back to Home"
             className="px-6 py-3"
           />
         </Link>

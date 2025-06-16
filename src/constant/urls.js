@@ -7,5 +7,5 @@ export const URLS = {
     TASKS: '/tasks',
     USERS: '/users',
     ADMIN: '/admin',
-    SETTING:'/admin/settings',
+    SETTINGS: '/admin/settings',
 }

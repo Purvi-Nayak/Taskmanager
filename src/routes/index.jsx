@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import PublicLayout from "../layout/PublicLayout";
-import PrivateLayout from "../layout/PrivateLayout";
-import useRoute from "../hooks/useRoutes";
+import PublicLayout from "../layout/public-layout";
+import PrivateLayout from "../layout/private-layout";
+import useRoute from "../hooks/useroutes";
 import NotFoundPage from "../pages/NotFoundPages"
 
 const Routing = () => {

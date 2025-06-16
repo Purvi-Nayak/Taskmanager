@@ -60,42 +60,43 @@
 //   useEffect(() => {
 //     fetchTasks();
 //   }, [currentUser.id]);
-const handleApprove = async (task) => {
-  try {
-    const response = await api.TASKS.updateStatus({
-      id: task.id,
-      status: "Approved"
-    });
-    
-    if (response.data) {
-      // Update local state
-      setTasks(prevTasks =>
-        prevTasks.map(t => t.id === task.id ? response.data : t)
-      );
-      dispatch(updateTask(response.data));
-      // Refresh data to ensure consistency
-      fetchData();
-    }
-  } catch (error) {
-    console.error("Error approving task:", error);
-  }
+import { useDrawer } from '../context/DrawerContext';
+import DrawerMenu from '../components/Drawer';
+import { FaHome, FaTasks, FaSignOutAlt } from 'react-icons/fa';
+import { URLS } from '../constant/urls';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../redux/slices/userSlice';
+
+const DrawerLayout = ({ children }) => {
+  const { isDrawerOpen, toggleDrawer } = useDrawer(); // <-- use the hook here
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate(URLS.LOGIN);
+  };
+
+  const userMenuItems = [
+    { icon: <FaHome className="w-5 h-5" />, label: 'Dashboard', path: URLS.DASHBOARD },
+    { icon: <FaTasks className="w-5 h-5" />, label: 'Tasks', path: URLS.TASKS },
+    { icon: <FaSignOutAlt className="w-5 h-5" />, label: 'Logout', onClick: handleLogout },
+  ];
+
+  return (
+    <div className="min-h-screen">
+      <DrawerMenu
+        isOpen={isDrawerOpen}
+        toggleDrawer={toggleDrawer}
+        menuItems={userMenuItems}
+        title="Menu"
+      />
+      <div className={`transition-all duration-300 ease-in-out ${isDrawerOpen ? 'ml-64' : 'ml-0'}`}>
+        {children}
+      </div>
+    </div>
+  );
 };
 
-const handleReject = async (task) => {
-  try {
-    const response = await api.TASKS.updateStatus({
-      id: task.id,
-      status: "Rejected"
-    });
-    
-    if (response.data) {
-      setTasks(prevTasks =>
-        prevTasks.map(t => t.id === task.id ? response.data : t)
-      );
-      dispatch(updateTask(response.data));
-      fetchData();
-    }
-  } catch (error) {
-    console.error("Error rejecting task:", error);
-  }
-};
+export default DrawerLayout;

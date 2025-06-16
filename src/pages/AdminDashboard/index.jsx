@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { updateTask } from "../../redux/slices/taskSlice";
-import Table from "../../components/table";
-import SearchBox from "../../shared/SearchText";
+import Table from "../../shared/table";
+import SearchBox from "../../shared/searchtext";
 import { api } from "../../api/client";
 
 const AdminDashboard = () => {
@@ -19,9 +19,7 @@ const AdminDashboard = () => {
       setLoading(true);
       const [usersResponse, tasksResponse] = await Promise.all([
         api.USERS.getAll(),
-        api.TASKS.getUserTasks({
-
-        })  // No userId filter for admin
+        api.TASKS.getUserTasks({}), // No userId filter for admin
       ]);
 
       if (usersResponse.data) {
@@ -42,46 +40,45 @@ const AdminDashboard = () => {
   }, []);
 
   const handleApprove = async (task) => {
-  try {
-    const response = await api.TASKS.updateStatus({
-      taskId: task.id,
-      data:{
-        ...task,
-        status: "Approved"
-      }
-    });
-    if (response.data) {
-      setTasks(prevTasks => 
-        prevTasks.map(data => 
-          data.id === task.id ? { status: "Approved",...data,  } : data
-        )
-      );
-    }
-  } catch (error) {
-    console.error("Error approving task:", error);
-  }
-};
-
-  const handleReject = async (task) => {
-    console.log('--------------task--------------', task);
     try {
       const response = await api.TASKS.updateStatus({
         taskId: task.id,
-        data:{
+        data: {
           ...task,
-          status: "Rejected"
-        }
+          status: "Approved",
+        },
+      });
+      if (response.data) {
+        setTasks((prevTasks) =>
+          prevTasks.map((data) =>
+            data.id === task.id ? { status: "Approved", ...data } : data
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error approving task:", error);
+    }
+  };
+
+  const handleReject = async (task) => {
+    console.log("--------------task--------------", task);
+    try {
+      const response = await api.TASKS.updateStatus({
+        taskId: task.id,
+        data: {
+          ...task,
+          status: "Rejected",
+        },
       });
       console.log("Reject response:", response.data);
       console.log("Reject request data:", response);
       if (response.data) {
         // Update just the modified task in the local state
-        setTasks(prevTasks => 
-          prevTasks.map(t => 
+        setTasks((prevTasks) =>
+          prevTasks.map((t) =>
             t.id === task.id ? { ...t, status: "Rejected" } : t
           )
         );
-         
       }
     } catch (error) {
       console.error("Error rejecting task:", error);
@@ -96,7 +93,7 @@ const AdminDashboard = () => {
         // Fetch both users and tasks in parallel
         const [usersResponse, tasksResponse] = await Promise.all([
           api.USERS.getAll(),
-          api.TASKS.getAllTasks() // New API endpoint for all tasks
+          api.TASKS.getAllTasks(), // New API endpoint for all tasks
         ]);
 
         if (usersResponse.data) {
@@ -120,9 +117,7 @@ const AdminDashboard = () => {
       id: "title",
       label: "Task",
       field_name: "title",
-      render: ({ row }) => (
-        <div className="px-6 py-4">{row.title}</div>
-      )
+      render: ({ row }) => <div className="px-6 py-4">{row.title}</div>,
     },
     {
       id: "user",
@@ -131,14 +126,10 @@ const AdminDashboard = () => {
       render: ({ row }) => {
         // Add null check for userId
         if (!row.userId) return <div className="px-6 py-4">-</div>;
-        
+
         const user = users?.find((u) => u.id === row.userId);
-        return (
-          <div className="px-6 py-4">
-            {user?.name || "Unknown User"}
-          </div>
-        );
-      }
+        return <div className="px-6 py-4">{user?.name || "Unknown User"}</div>;
+      },
     },
     {
       id: "status",
@@ -164,24 +155,23 @@ const AdminDashboard = () => {
             {row.status}
           </span>
         </div>
-      )
+      ),
     },
     {
       id: "dueDate",
       label: "Due Date",
       field_name: "dueDate",
-      render: ({ row }) => (
-        <div className="px-6 py-4">{row.dueDate}</div>
-      )
+      render: ({ row }) => <div className="px-6 py-4">{row.dueDate}</div>,
     },
     {
       id: "actions",
       label: "Actions",
       render: ({ row }) => {
         if (!row) return null;
-    
-        const canApproveOrReject = !["Approved", "Rejected"].includes(row.status);
-  
+
+        const canApproveOrReject = !["Approved", "Rejected"].includes(
+          row.status
+        );
 
         return (
           <div className="px-6 py-4">
@@ -203,22 +193,23 @@ const AdminDashboard = () => {
             )}
           </div>
         );
-      }
-    }
+      },
+    },
   ];
 
   // Filter tasks based on search and status
   const filteredTasks = React.useMemo(() => {
     return tasks.filter((task) => {
       if (!task) return false;
-      
+
       const user = users.find((u) => u.id === task.userId);
       const searchTerm = search.toLowerCase().trim();
-      const taskTitle = task.title?.toLowerCase() || '';
-      const userName = user?.name?.toLowerCase() || '';
+      const taskTitle = task.title?.toLowerCase() || "";
+      const userName = user?.name?.toLowerCase() || "";
 
-      const matchesSearch = !searchTerm || 
-        taskTitle.includes(searchTerm) || 
+      const matchesSearch =
+        !searchTerm ||
+        taskTitle.includes(searchTerm) ||
         userName.includes(searchTerm);
 
       const matchesStatus = !statusFilter || task.status === statusFilter;
@@ -255,7 +246,7 @@ const AdminDashboard = () => {
           </select>
         </div>
 
-        <Table 
+        <Table
           columns={columns}
           data={filteredTasks}
           emptyMessage="No tasks found"

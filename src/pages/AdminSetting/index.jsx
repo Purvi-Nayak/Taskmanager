@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import InputText from '../../shared/InputText';
-import CustomButton from '../../shared/Button';
+import InputText from '../../shared/inputText';
+import CustomButton from '../../shared/custombutton';
 import { setUser } from '../../redux/slices/userSlice';
 
 const AdminSettings = () => {

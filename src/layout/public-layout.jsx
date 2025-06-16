@@ -1,6 +1,6 @@
 import Header from "../components/Header";
 import { Outlet } from "react-router-dom";
-import withAuth from "../hoc/Withauth";
+import withAuth from "../hoc/with-auth";
 
 const PublicLayout = () => {
   return (
