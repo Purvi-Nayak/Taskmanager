@@ -10,6 +10,8 @@ const Routing = () => {
   return (
     <>
       <Routes>
+
+        {role === "admin" && <Route path="/" element={<Navigate to="/dashboard" replace />} />}
         <Route path="*" element={<NotFoundPage />} />
 
         <Route element={<PublicLayout />}>

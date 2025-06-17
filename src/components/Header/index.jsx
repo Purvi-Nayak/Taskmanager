@@ -25,7 +25,6 @@ const Header = ({ userName = "Admin" }) => {
      <header className={`flex items-center justify-between bg-primarylight px-6 py-3 shadow-sm font-roboto transition-all duration-300 ease-in-out ${
       isDrawerOpen ? 'pl-64' : 'pl-6'
     }`}>
-   
 
       <div
         className="flex items-center space-x-3 cursor-pointer group"

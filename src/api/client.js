@@ -23,14 +23,41 @@ export const api = {
         url: `/users?email=${encodeURIComponent(data.email)}`,
         ...config,
       }),
-    update: (id, data) => client.put(`/users/${id}`, data),
+      update:(config) =>
+      client({
+        method: METHODS.PUT,
+        url: `/users/${config.userId}`,
+        data: {
+          ...config.data,
+          updatedAt: new Date().toISOString(),
+        },
+      }),
+    // update: (id, data) => client.put(`/users/${id}`, data),
     delete: (id) => client.delete(`/users/${id}`),
   },
+  ADMIN:{
+    updateProfile: ({ adminId, data }) =>
+      client({
+        method: METHODS.PUT,
+        url: `/users/${adminId}`,
+        data: {
+          ...data,
+          updatedAt: new Date().toISOString(),
+        },
+      }),
+    verifyPassword: ({ adminId, password }) =>
+      client({
+        method: METHODS.POST,
+        url: `/users/verify-password`,
+        data: { adminId, password },
+      }),
+
+  },
   TASKS: {
-    getUserTasks: ({ userId, ...config }) =>
+     getUserTasks: ({ userId, ...config }) =>
       client({
         method: METHODS.GET,
-        url: `/tasks?userId=${userId}`,
+        url: userId ? `/tasks?userId=${userId}` : '/tasks',
         ...config,
       }),
     get: ({ id, ...config }) =>
@@ -55,7 +82,7 @@ export const api = {
       client({
         method: "PUT",
         url: `/tasks/${taskId}`,
-        data
+        data,
       }),
     // General actions
     delete: ({ id }) =>
@@ -68,7 +95,7 @@ export const api = {
       client({
         method: METHODS.PUT,
         url: `/tasks/${taskId}`,
-      data
+        data,
       }),
     getAllTasks: () =>
       client({

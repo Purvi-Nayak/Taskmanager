@@ -379,6 +379,7 @@ const Tasks = () => {
       id: "title",
       label: "Title",
       field_name: "title",
+      sortable: true,
 
       render: ({ row }) => (
         <span className="font-semibold text-gray-900">{row.title}</span>
@@ -388,11 +389,13 @@ const Tasks = () => {
       id: "description",
       label: "Description",
       field_name: "description",
+      sortable: true,
     },
     {
       id: "dueDate",
       label: "Due Date",
       field_name: "dueDate",
+      sortable: true,
       render: ({ row }) => new Date(row.dueDate).toLocaleDateString(),
     },
     // {
@@ -417,6 +420,7 @@ const Tasks = () => {
       id: "status",
       label: "Status",
       field_name: "status",
+      sortable: true,
       render: ({ row }) => (
         <span
           className={`px-2 py-1 text-xs font-semibold rounded-full ${
@@ -460,8 +464,8 @@ const Tasks = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Add this state
   const editingTask = useSelector((state) => state.tasks.editingTask);
   const debouncedSearch = useDebounce(search, 400);
-  const headers = ["Title", "Description", "Date","Status","Priority", "Actions"];
-
+   const [sortConfig, setSortConfig] = useState({ key: '', direction: '' });
+ 
   // Add these handlers
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -472,6 +476,15 @@ const Tasks = () => {
     setIsModalOpen(false);
     dispatch(setEditingTask(null));
   };
+
+  const handleSort = (key) => {
+    let direction = 'asc';
+    if (sortConfig.key === key) {
+      direction = sortConfig.direction === 'asc' ? 'desc' : 'asc';
+    }
+    setSortConfig({ key, direction });
+  };
+
   const fetchTasks = async () => {
     try {
       setLoading(true);
@@ -683,21 +696,13 @@ const Tasks = () => {
             data={tasks}
             emptyMessage="No tasks found"
             className="w-full"
+            onSort={handleSort}
+            sortConfig={sortConfig}
+            itemsPerPage={5}
           />
         )}
       </div>
-      {/* Delete Confirmation Modal */}
-      {/* <CustomModal
-  isOpen={Boolean(deleteId)}
-  onClose={() => setDeleteId(null)}
-  title="Confirm Delete"
-  content="Are you sure you want to delete this task?"
-  taskId={deleteId}
-  onConfirm={handleConfirmDelete} // Add this line
-  onCancel={() => setDeleteId(null)}
-  confirmText="Delete"
-  cancelText="Cancel"
-/> */}{" "}
+{" "}
       <CustomModal
         isOpen={Boolean(deleteId)}
         onClose={() => setDeleteId(null)}
@@ -729,7 +734,7 @@ const Tasks = () => {
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         title={editingTask ? "Edit Task" : "Add Task"}
-        actions={null} // Form has its own buttons
+        actions={null} 
       >
         <TaskForm
           initialValues={

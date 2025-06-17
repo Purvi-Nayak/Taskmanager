@@ -11,14 +11,15 @@ const PrivateLayout = () => {
   const user = useSelector(state => state.users.user);
 
 
-  // Show admin drawer for admin, user drawer for others
-  // const isAdmin = user?.role === 'admin';
+
 
   // const Layout = isAdmin ? AdminDrawerLayout : DrawerLayout;
 
   return (
     <div className="flex flex-col min-h-screen">
+
       <Header />
+      
       {/* <Layout> */}
       <DrawerLayout>
         <div className="flex-1">
