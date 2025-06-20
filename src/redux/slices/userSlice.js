@@ -5,11 +5,14 @@ const initialState = {
   user: null,
   token: null,
   error: null,
-  usersList: [] 
+  usersList: [] ,
+  admin: null
+  
 };
 
 const userSlice = createSlice({
   name: 'users',
+ 
   initialState,
   reducers: {
     setLoginStatus: (state, action) => {

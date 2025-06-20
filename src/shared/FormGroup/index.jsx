@@ -1,5 +1,6 @@
 import { classNames } from "../../utils/functions";
-import InputText from "../inputText";
+import InputText from "../InputText";
+
 
 const FormGroup = ({ 
   label, 

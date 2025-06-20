@@ -40,7 +40,13 @@ export const loginValidation = Yup.object().shape({
 export const forgetPasswordValidation = Yup.object().shape({
     email: Yup.string()
         .matches(EMAIL_REGEX, 'Please enter valid email format.')
-        .required('Please enter email.')
+        .required('Please enter email.'),
+          password: Yup.string()
+        .matches(
+            PASSWORD_REGEX,
+            'Please enter password with at least 8 characters, one uppercase, one lowercase, one number and one special character.'
+        )
+        .required('Please enter password.')
 });
 
 export const taskValidation = Yup.object().shape({
@@ -75,3 +81,22 @@ const updateProfileSchema = Yup.object().shape({
       'Password must contain at least one uppercase letter, one lowercase letter, one number and one special character'
     )
 });
+export const adminSettingsSchema = Yup.object().shape({
+  currentPassword: Yup.string()
+    .required('Current password is required')
+    .min(8, 'Password must be at least 8 characters'),
+  newPassword: Yup.string()
+    .required('New password is required')
+    .min(8, 'Password must be at least 8 characters')
+    .matches(
+      PASSWORD_REGEX,
+      'Password must contain uppercase, lowercase, number and special character'
+    )
+    .notOneOf([Yup.ref('currentPassword')], 'New password must be different from current password'),
+  confirmPassword: Yup.string()
+    .required('Please confirm your password')
+    .oneOf([Yup.ref('newPassword')], "Passwords don't match")
+});
+export const updateProfileValidation = (isAdmin = false) => {
+  return isAdmin ? adminProfileSchema : updateProfileSchema;
+};

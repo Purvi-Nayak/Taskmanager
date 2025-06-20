@@ -13,21 +13,35 @@ const PrivateLayout = () => {
 
 
 
-  // const Layout = isAdmin ? AdminDrawerLayout : DrawerLayout;
+  
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="h-screen w-screen overflow-hidden flex flex-col">
+  <Header />
 
-      <Header />
+  <div className="flex flex-1 overflow-hidden ">
+    {/* Sidebar */}
+    <DrawerLayout />
+
+    {/* Scrollable main content */}
+    <main className="flex-1 overflow-y-auto overflow-x-hidden bg-gray-50">
+      <Outlet />
+    </main>
+  </div>
+</div>
+
+    // <div className="flex flex-col min-h-screen">
+
+    //   <Header />
       
-      {/* <Layout> */}
-      <DrawerLayout>
-        <div className="flex-1">
-          <Outlet />
-        </div>
-      </DrawerLayout>
-      {/* </Layout> */}
-    </div>
+    //   {/* <Layout> */}
+    //   <DrawerLayout>
+    //     <div className="flex-1">
+    //       <Outlet />
+    //     </div>
+    //   </DrawerLayout>
+    //   {/* </Layout> */}
+    // </div>
   );
 };
 

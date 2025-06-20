@@ -236,7 +236,10 @@ const Table = ({
           )}
         </tbody>
       </table>
-      {renderPagination()}
+      <div>
+    {renderPagination()}
+      </div>
+  
     </div>
   );
 };

@@ -11,6 +11,13 @@ export const api = {
         url: `/users?email=${data.email}&password=${data.password}`,
         ...config,
       }),
+
+    getUsers: (config) =>
+      client({
+        method: METHODS.GET,
+        url: "/users",
+        ...config,
+      }),
     getAll: (config) =>
       client({
         method: METHODS.GET,
@@ -23,7 +30,14 @@ export const api = {
         url: `/users?email=${encodeURIComponent(data.email)}`,
         ...config,
       }),
-      update:(config) =>
+
+    updateUser: ({ userId, data }) => client({
+      method: METHODS.PUT,
+      url: `/users/${userId}`,
+      data
+    }),
+
+    update: (config) =>
       client({
         method: METHODS.PUT,
         url: `/users/${config.userId}`,
@@ -32,10 +46,21 @@ export const api = {
           updatedAt: new Date().toISOString(),
         },
       }),
+
+    updatePassword: ({ userId, data }) =>
+      client({
+        method: METHODS.PUT,
+        url: `/users/${userId}/password`,
+        data: {
+          ...data,
+          updatedAt: new Date().toISOString(),
+        },
+      }),
+
     // update: (id, data) => client.put(`/users/${id}`, data),
     delete: (id) => client.delete(`/users/${id}`),
   },
-  ADMIN:{
+  ADMIN: {
     updateProfile: ({ adminId, data }) =>
       client({
         method: METHODS.PUT,
@@ -45,19 +70,18 @@ export const api = {
           updatedAt: new Date().toISOString(),
         },
       }),
-    verifyPassword: ({ adminId, password }) =>
+    verifyPassword: ({ adminId, password, email }) =>
       client({
         method: METHODS.POST,
         url: `/users/verify-password`,
-        data: { adminId, password },
+        data: { adminId, password, email },
       }),
-
   },
   TASKS: {
-     getUserTasks: ({ userId, ...config }) =>
+    getUserTasks: ({ userId, ...config }) =>
       client({
         method: METHODS.GET,
-        url: userId ? `/tasks?userId=${userId}` : '/tasks',
+        url: userId ? `/tasks?userId=${userId}` : "/tasks",
         ...config,
       }),
     get: ({ id, ...config }) =>

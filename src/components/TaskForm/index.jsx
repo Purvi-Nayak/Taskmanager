@@ -175,12 +175,13 @@ import {
 import { taskValidation } from "../../utils/validation";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import FormGroup from "../../shared/formgroup";
+
 import CustomButton from "../../shared/custombutton";
 import { api } from "../../api/client";
 
 import { useState } from "react";
 import CustomForm from "../../shared/form"; // <-- import your CustomForm
+import FormGroup from "../../shared/FormGroup";
 
 const TaskForm = ({ initialValues, onSubmit: onSubmitProp }) => {
   const dispatch = useDispatch();

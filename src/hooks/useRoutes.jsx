@@ -7,7 +7,7 @@ import Tasks from "../pages/Task";
 import Users from "../pages/Users";
 import ForgotPasswod from "../container/auth/ForgetPassword";
 import AdminDashboard from "../pages/AdminDashboard";
-import Setting from "../pages/AdminSetting";
+import Setting from "../pages/UserSetting";
 
 const useRoute = () => {
   const allRoutes = useMemo(
@@ -41,6 +41,7 @@ const useRoute = () => {
         path: URLS.ADMIN,
         element: AdminDashboard,
         isPrivate: true,
+     
       },
       {
         id: "tasks",

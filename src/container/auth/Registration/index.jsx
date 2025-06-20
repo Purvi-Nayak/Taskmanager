@@ -1,81 +1,36 @@
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import {
-  setUser,
-  setToken,
-  addToUsersList,
-} from "../../../redux/slices/userSlice";
-import { api } from "../../../api/client";
-import FormGroup from "../../../shared/formgroup";
+// index.jsx
+import React from "react";
+import { Link } from "react-router-dom";
+import useRegistration from "./use-registration";
 import CustomButton from "../../../shared/custombutton";
-import { registerValidation } from "../../../utils/validation";
+import CustomModal from "../../../shared/custommodal";
+import FormGroup from "../../../shared/FormGroup";
 
 const Registration = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(registerValidation),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      role: "user",
-    },
-  });
-
-  const onSubmit = async (values) => {
-    try {
-      const checkUser = await api.USERS.login({
-        data: { email: values.email },
-      });
-
-      if (checkUser.data.length > 0) {
-        alert("User with this email already exists");
-        return;
-      }
-
-      const response = await api.USERS.register({
-        data: {
-          name: values.name,
-          email: values.email,
-          password: values.password,
-          role: values.role,
-          createdAt: new Date().toISOString(),
-        },
-      });
-
-      const newUser = response.data;
-      const token = btoa(
-        JSON.stringify({
-          id: newUser.id,
-          email: newUser.email,
-          role: newUser.role,
-        })
-      );
-
-      dispatch(addToUsersList(newUser));
-      dispatch(setUser(newUser));
-      dispatch(setToken(token));
-
-      navigate(newUser.role === "admin" ? "/admin" : "/");
-    } catch (error) {
-      console.error("Registration error:", error);
-      alert("Registration failed: " + error.message);
-    }
-  };
+    errors,
+    isSubmitting,
+    onSubmit,
+    alertOpen,
+    setAlertOpen,
+    errorMessage,
+    successMessage,
+    isSuccess,
+  } = useRegistration();
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full bg-white p-8 rounded shadow-lg">
         <h2 className="text-center text-2xl font-bold mb-6">Create Account</h2>
+
+        {alertOpen &&
+          (errorMessage ? (
+            <div className="mb-4 text-sm text-red-600">{errorMessage}</div>
+          ) : (
+            <div className="mb-4 text-sm text-green-600">{successMessage}</div>
+          ))}
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <FormGroup
@@ -115,35 +70,29 @@ const Registration = () => {
           />
 
           <div className="space-y-2">
-            <label className="block font-roboto text-input-label font-medium text-black">
-              Role
-            </label>
+            <label className="block font-medium text-black">Role</label>
             <div className="flex gap-4">
               <label className="inline-flex items-center">
                 <input
                   type="radio"
                   {...register("role")}
                   value="user"
-                  className="h-4 w-4 text-primarymain focus:ring-primarylight border-neutral-main rounded-full"
+                  className="h-4 w-4 text-primarymain border-gray-300 rounded-full"
                 />
-                <span className="ml-2 text-sm font-roboto text-black">
-                  Users
-                </span>
+                <span className="ml-2 text-sm text-black">User</span>
               </label>
               <label className="inline-flex items-center">
                 <input
                   type="radio"
                   {...register("role")}
                   value="admin"
-                  className="h-4 w-4 text-primarymain focus:ring-primarylight border-neutral-main rounded-full"
+                  className="h-4 w-4 text-primarymain border-gray-300 rounded-full"
                 />
-                <span className="ml-2 text-sm font-roboto text-black">
-                  Admin
-                </span>
+                <span className="ml-2 text-sm text-black">Admin</span>
               </label>
             </div>
             {errors.role && (
-              <p className="mt-1 text-sm font-roboto text-status-error-main">
+              <p className="mt-1 text-sm text-red-600">
                 {errors.role.message}
               </p>
             )}
@@ -157,7 +106,7 @@ const Registration = () => {
           />
         </form>
 
-        <div className="mt-1 text-center">
+        <div className="mt-4 text-center">
           <Link
             to="/"
             className="text-sm text-primarymain hover:text-primarydark"
@@ -166,8 +115,44 @@ const Registration = () => {
           </Link>
         </div>
       </div>
+
+      <CustomModal
+        isOpen={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        title={
+          isSuccess ? "Registration Successful" : "Registration Failed"
+        }
+        contentClass="p-4"
+        overlayClass="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+        showCloseIcon={true}
+        titleClass={
+          isSuccess
+            ? "bg-green-50 text-green-600 border-b border-green-100"
+            : "bg-red-50 text-red-600 border-b border-red-100"
+        }
+      >
+        <div
+          className={`text-center ${
+            isSuccess ? "text-green-700" : "text-gray-700"
+          } mb-4`}
+        >
+          {isSuccess
+            ? "Registration successful! Redirecting..."
+            : "User already exists or registration failed."}
+        </div>
+        <div className="flex justify-center">
+          <CustomButton
+            label="OK"
+            onClick={() => setAlertOpen(false)}
+            className={`${
+              isSuccess
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-primarymain hover:bg-primarydark"
+            } text-white px-8 py-2 rounded-md`}
+          />
+        </div>
+      </CustomModal>
     </div>
   );
 };
-
 export default Registration;

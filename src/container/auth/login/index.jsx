@@ -1,73 +1,27 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setUser, setToken, setError } from "../../../redux/slices/userSlice";
-import { api } from "../../../api/client";
-import CustomButton from "../../../shared/custombutton";
-import { loginValidation } from "../../../utils/validation";
+// index.jsx
+import React from "react";
 import { Link } from "react-router-dom";
-import CustomModal from "../../../shared/custommodal";
-import FormGroup from "../../../shared/formgroup";
+import useLogin from "./use-login";
+import CustomButton from "../../../shared/custombutton";
+import FormGroup from "../../../shared/FormGroup";
 import Checkbox from "../../../shared/checkbox";
+import CustomModal from "../../../shared/custommodal";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [alertOpen, setAlertOpen] = useState(false);
-
-const [rememberMe, setRememberMe] = useState(false);
-
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm({
-    resolver: yupResolver(loginValidation),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-
-  const onSubmit = async (values) => {
-    try {
-      const response = await api.USERS.login({
-        data: {
-          email: values.email,
-          password: values.password,
-        },
-      });
-console.log("Login response:", response);
-      const users = response.data;
-
-      if (!users || users.length === 0) {
-        dispatch(setError("Invalid credentials"));
-        setAlertOpen(true);
-        return;
-      }
-
-      const user = users[0];
-      const token = btoa(
-        JSON.stringify({
-          id: user.id,
-          email: user.email,
-          role: user.role,
-        })
-      );
-
-      dispatch(setUser(user));
-      dispatch(setToken(token));
-      dispatch(setError(null));
-
-      navigate(user.role === "admin" ? "/admin" : "/");
-    } catch (error) {
-      console.error("Login error:", error);
-      dispatch(setError("Invalid email or password"));
-      setAlertOpen(true);
-    }
-  };
+    errors,
+    isSubmitting,
+    alertOpen,
+    setAlertOpen,
+    errorMessage,
+    successMessage,
+    rememberMe,
+    setRememberMe,
+    isSuccess,
+    onSubmit,
+  } = useLogin();
 
   return (
     <>
@@ -81,6 +35,7 @@ console.log("Login response:", response);
               name="email"
               register={register}
               error={errors.email}
+              type="email"
               placeholder="Enter your email"
             />
             <FormGroup
@@ -92,14 +47,12 @@ console.log("Login response:", response);
               placeholder="Enter your password"
             />
 
-            {/* Need to proper change */}
             <div className="flex items-center justify-between">
- <Checkbox
-  label="Remember me"
-  checked={rememberMe}
-  onChange={(e) => setRememberMe(e.target.checked)}
-/>
-       
+              <Checkbox
+                label="Remember me"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
               <Link
                 to="/forgotpassword"
                 className="text-sm font-medium text-primarymain hover:text-primarydark"
@@ -115,7 +68,8 @@ console.log("Login response:", response);
               disabled={isSubmitting}
             />
           </form>
-          <div className="mt-1 text-center">
+
+          <div className="mt-4 text-center">
             <Link
               to="/register"
               className="text-sm text-primarymain hover:text-primarydark"
@@ -127,13 +81,39 @@ console.log("Login response:", response);
       </div>
 
       <CustomModal
-        open={alertOpen}
-        title="Login Failed"
-        message="Invalid credentials. Please try again."
-        onConfirm={() => setAlertOpen(false)}
-        confirmText="OK"
-        showCancel={false}
-      />
+        isOpen={alertOpen}
+        onClose={() => setAlertOpen(false)}
+        title={isSuccess ? "Login Successful" : "Login Failed"}
+        contentClass="p-4"
+        overlayClass="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+        showCloseIcon={true}
+        titleClass={
+          isSuccess
+            ? "bg-green-50 text-green-600 border-b border-green-100"
+            : "bg-red-50 text-red-600 border-b border-red-100"
+        }
+      >
+        <div
+          className={`text-center ${
+            isSuccess ? "text-green-700" : "text-gray-700"
+          } mb-4`}
+        >
+          {isSuccess
+            ? successMessage || "Login successful! Redirecting..."
+            : errorMessage || "Invalid credentials. Please try again."}
+        </div>
+        <div className="flex justify-center">
+          <CustomButton
+            label="OK"
+            onClick={() => setAlertOpen(false)}
+            className={`${
+              isSuccess
+                ? "bg-green-600 hover:bg-green-700"
+                : "bg-primarymain hover:bg-primarydark"
+            } text-white px-8 py-2 rounded-md`}
+          />
+        </div>
+      </CustomModal>
     </>
   );
 };
