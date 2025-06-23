@@ -10,11 +10,6 @@ import { useSelector } from "react-redux";
 const PrivateLayout = () => {
   const user = useSelector(state => state.users.user);
 
-
-
-
-  
-
   return (
     <div className="h-screen w-screen overflow-hidden flex flex-col">
   <Header />

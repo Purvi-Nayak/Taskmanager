@@ -12,7 +12,6 @@ const initialState = {
 
 const userSlice = createSlice({
   name: 'users',
- 
   initialState,
   reducers: {
     setLoginStatus: (state, action) => {
@@ -29,7 +28,7 @@ const userSlice = createSlice({
       state.error = action.payload;
     },
     addToUsersList: (state, action) => {
-      if (!state.usersList) state.usersList = [];  // Ensure usersList exists
+      if (!state.usersList) state.usersList = [];  
       state.usersList.push(action.payload);
     },
     setUsersList: (state, action) => {

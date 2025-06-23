@@ -25,12 +25,12 @@ const taskSlice = createSlice({
         state.tasks[index] = action.payload;
       }
     },
-    deleteTask: (state, action) => {
-      state.tasks = state.tasks.filter(task => 
-        !(task.id === action.payload.taskId && 
-          task.userToken === action.payload.userToken)
-      );
-    },
+    // deleteTask: (state, action) => {
+    //   state.tasks = state.tasks.filter(task => 
+    //     !(task.id === action.payload.taskId && 
+    //       task.userToken === action.payload.userToken)
+    //   );
+    // },
     setModalOpen: (state, action) => {
       state.isModalOpen = action.payload;
     },

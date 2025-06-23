@@ -6,7 +6,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 const persistConfig = {
     key: 'octom',
     storage,
-    blacklist: [] // Remove tasks from blacklist to persist them
+    blacklist: [] 
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

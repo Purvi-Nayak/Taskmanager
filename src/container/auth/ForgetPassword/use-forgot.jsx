@@ -10,7 +10,7 @@ export const useForgetPassword = () => {
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const currentUser = useSelector((state) => state.users.user);
+ 
 
   const {
     register,
