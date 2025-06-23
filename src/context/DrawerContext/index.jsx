@@ -15,7 +15,7 @@ export const DrawerProvider = ({ children }) => {
   );
 };
 
-// Create and export the hook
+
 export const useDrawer = () => {
   const context = useContext(DrawerContext);
   if (!context) {
@@ -24,5 +24,5 @@ export const useDrawer = () => {
   return context;
 };
 
-// Default export is optional but can be helpful
+
 export default DrawerProvider;
