@@ -10,6 +10,11 @@ const initialState = {
   
 };
 
+export const fetchUsers = createAsyncThunk('users/fetchUsers', async () => {
+  const response = await api.USERS.getAll();
+  return response.data;
+});
+
 const userSlice = createSlice({
   name: 'users',
   initialState,
@@ -41,6 +46,11 @@ const userSlice = createSlice({
       state.error = null;
     }
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+      state.usersList = action.payload;
+    });
+  }
 });
 
 export const { 
