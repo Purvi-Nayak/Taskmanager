@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { api } from '../../api/client';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
   isLoggedin: false,

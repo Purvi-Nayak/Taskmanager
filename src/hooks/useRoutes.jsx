@@ -1,13 +1,13 @@
 import { useMemo } from "react";
 import { URLS } from "../constant/urls";
-import Dashboard from "../pages/UserDashboard";
+import Dashboard from "../pages/user-dashboard";
 import Login from "../container/auth/login";
 import Register from "../container/auth/Registration";
 import Tasks from "../pages/Task";
-import Users from "../pages/Users";
+import Users from "../pages/user";
 import ForgotPasswod from "../container/auth/ForgetPassword";
-import AdminDashboard from "../pages/AdminDashboard";
-import Setting from "../pages/UserSetting";
+import AdminDashboard from "../pages/admin-dashboard";
+import Setting from "../pages/user-setting";
 
 const useRoute = () => {
   const allRoutes = useMemo(

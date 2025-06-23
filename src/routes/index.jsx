@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import PublicLayout from "../layout/public-layout";
 import PrivateLayout from "../layout/private-layout";
 import useRoute from "../hooks/useroutes";
-import NotFoundPage from "../pages/NotFoundPages"
+import NotFoundPage from "../pages/not-foundpage"
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
