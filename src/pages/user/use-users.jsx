@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -83,7 +82,7 @@ const useUsers = () => {
       label: "Role",
       field_name: "role",
       sortable: true,
-   
+
       options: ["user", "admin"],
       filterPlaceholder: "Filter by role",
       filterType: "select",

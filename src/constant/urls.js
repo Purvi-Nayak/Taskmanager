@@ -7,4 +7,5 @@ export const URLS = {
     USERS: '/users',
     ADMIN: '/admin',
     SETTINGS: '/admin/settings',
+    RESET:'reset'
 }

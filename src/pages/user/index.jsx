@@ -64,7 +64,10 @@ const Users = () => {
               emptyMessage="No tasks found"
               className="w-full bg-gray-100 max-w-4xl rounded-lg shadow overflow-hidden"
               onRowClick={(row) => {
-                if (currentUser?.role === "admin" || row.userId === currentUser.id) {
+                if (
+                  currentUser?.role === "admin" ||
+                  row.userId === currentUser.id
+                ) {
                   navigate(`/tasks/${row.id}`);
                 }
               }}

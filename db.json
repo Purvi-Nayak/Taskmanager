@@ -10,21 +10,12 @@
     {
       "name": "ronak",
       "email": "ronakgami@gmail.com",
-      "currentPassword": "Test@1122",
-      "password": "Test@121222",
+      "password": "Test@1212",
       "role": "user",
-      "updatedAt": "2025-06-20T10:04:48.898Z",
+      "updatedAt": "2025-06-24T10:16:38.632Z",
       "id": 2
     },
-    {
-      "name": "Pal",
-      "email": "pal@gmail.com",
-      "currentPassword": "Test@123123",
-      "password": "Test@12122",
-      "role": "user",
-      "updatedAt": "2025-06-20T10:08:17.862Z",
-      "id": 4
-    },
+ 
     {
       "name": "jeel",
       "email": "jel@gmail.com",
@@ -68,18 +59,20 @@
     {
       "name": "QEWQ",
       "email": "qeqe@gmail.com",
-      "password": "Test@1212",
+      "password": "Test@12122",
       "role": "user",
       "createdAt": "2025-06-19T12:01:40.358Z",
-      "id": 13
+      "id": 13,
+      "updatedAt": "2025-06-24T08:45:06.021Z"
     },
     {
       "name": "rohan",
       "email": "ronakwwgami@gmail.com",
-      "password": "Test@1234",
+      "password": "Test@121212",
       "role": "user",
       "createdAt": "2025-06-19T12:32:03.836Z",
-      "id": 14
+      "id": 14,
+      "updatedAt": "2025-06-24T08:46:27.001Z"
     },
     {
       "name": "meetal",

@@ -1,7 +1,7 @@
-import React from 'react';
-import FormGroup from '../../shared/FormGroup';
-import CustomButton from '../../shared/custombutton';
-import useUserSetting from './use-usersetting';
+import React from "react";
+import FormGroup from "../../shared/FormGroup";
+import CustomButton from "../../shared/custombutton";
+import useUserSetting from "./use-usersetting";
 
 const UserSetting = () => {
   const {
@@ -22,7 +22,7 @@ const UserSetting = () => {
           <div className="flex justify-between items-center">
             <span>{errorMessage}</span>
             <button
-              onClick={() => setErrorMessage('')}
+              onClick={() => setErrorMessage("")}
               className="text-red-500 hover:text-red-700 ml-4 focus:outline-none"
               aria-label="Close error message"
             >
@@ -75,7 +75,7 @@ const UserSetting = () => {
         />
 
         <CustomButton
-          label={isSubmitting ? 'Updating...' : 'Update Password'}
+          label={isSubmitting ? "Updating..." : "Update Password"}
           type="submit"
           disabled={isSubmitting}
           className="w-full bg-primarymain hover:bg-primarydark"

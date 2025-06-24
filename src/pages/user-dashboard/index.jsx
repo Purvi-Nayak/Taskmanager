@@ -1,5 +1,5 @@
-import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import React from "react";
+import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   BarElement,
@@ -8,7 +8,7 @@ import {
   Title,
   Tooltip,
   Legend,
-} from 'chart.js';
+} from "chart.js";
 
 ChartJS.register(
   BarElement,
@@ -18,7 +18,7 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-import { useUserDashboard } from './use-userdashboard';
+import { useUserDashboard } from "./use-userdashboard";
 
 const UserDashboard = () => {
   const {
@@ -44,15 +44,21 @@ const UserDashboard = () => {
         </div>
         <div className="bg-blue-100 rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold mb-2">Approved Tasks</h3>
-          <p className="text-3xl font-bold text-green-600">{taskStats.approved}</p>
+          <p className="text-3xl font-bold text-green-600">
+            {taskStats.approved}
+          </p>
         </div>
         <div className="bg-red-100 rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold mb-2">Rejected Tasks</h3>
-          <p className="text-3xl font-bold text-red-600">{taskStats.rejected}</p>
+          <p className="text-3xl font-bold text-red-600">
+            {taskStats.rejected}
+          </p>
         </div>
         <div className="bg-blue-100 rounded-lg shadow p-6">
           <h3 className="text-lg font-semibold mb-2">In Progress</h3>
-          <p className="text-3xl font-bold text-blue-500">{taskStats.inProgress}</p>
+          <p className="text-3xl font-bold text-blue-500">
+            {taskStats.inProgress}
+          </p>
         </div>
       </div>
 

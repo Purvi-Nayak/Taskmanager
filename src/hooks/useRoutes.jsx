@@ -9,6 +9,7 @@ import ForgotPasswod from "../container/auth/ForgetPassword";
 import AdminDashboard from "../pages/admin-dashboard";
 import Setting from "../pages/user-setting";
 
+
 const useRoute = () => {
   const allRoutes = useMemo(
     () => [
@@ -61,6 +62,12 @@ const useRoute = () => {
         element: Setting,
         isPrivate: true,
       },
+      // {
+      //   id:"reset",
+      //   path:URLS.RESET,
+      //   element: Reset,
+      //   isPrivate:true
+      // }
     ],
     []
   );
