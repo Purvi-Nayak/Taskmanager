@@ -81,28 +81,7 @@ const TaskForm = ({ initialValues, onSubmit: onSubmitProp }) => {
           placeholder="Enter task description"
           className="w-full mx-9 my-9 rounded-md border font-roboto"
         />
-        {/* <div className="space-y-2">
-          <label className="block font-roboto text-input-label font-medium text-black">
-            Description
-          </label>
-          <textarea
-            {...register("description")}
-            className={`w-full px-4 py-2 rounded-md border font-roboto
-              ${
-                errors.description
-                  ? "border-status-error-main"
-                  : "border-neutral-main"
-              }
-              focus:outline-none focus:border-primarymain`}
-            rows="4"
-            placeholder="Enter task description"
-          />
-          {errors.description && (
-            <p className="text-sm text-status-error-main font-roboto">
-              {errors.description.message}
-            </p>
-          )}
-        </div> */}
+   
 
         <FormGroup
           label="Due Date"

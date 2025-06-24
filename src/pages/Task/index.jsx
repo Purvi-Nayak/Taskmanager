@@ -24,6 +24,7 @@ const Task = () => {
     handleAddTask,
     deleteId,
     handleDelete,
+    setDeleteId,
     handleConfirmDelete,
     loading,
     handleSort,
@@ -75,6 +76,10 @@ const Task = () => {
               ? "bg-green-100 text-green-800"
               : row.status === "In Progress"
               ? "bg-yellow-100 text-yellow-800"
+              : row.status === "Approved"
+              ? "bg-blue-100 text-blue-800"
+              : row.status === "Rejected"
+              ? "bg-red-100 text-red-800"
               : "bg-gray-100 text-gray-800"
           }`}
         >
@@ -148,29 +153,30 @@ const Task = () => {
       </div>
 
       {/* Delete Modal */}
-      <CustomModal
-        isOpen={Boolean(deleteId)}
-        onClose={() => handleDelete(null)}
-        title="Confirm Delete"
-        actions={
-          <>
-            <button
-              onClick={() => handleDelete(null)}
-              className="px-4 py-2 bg-gray-200 text-gray-800 rounded"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleConfirmDelete}
-              className="px-4 py-2 bg-red-600 text-white rounded"
-            >
-              Delete
-            </button>
-          </>
-        }
+<CustomModal
+  isOpen={Boolean(deleteId)}
+  onClose={() => setDeleteId(null)}
+  title="Confirm Delete"
+  actions={
+    <>
+      <button
+        onClick={() => setDeleteId(null)}
+        className="px-4 py-2 bg-gray-200 text-gray-800 rounded"
       >
-        <p className="mt-2 text-black">Are you sure you want to delete this task?</p>
-      </CustomModal>
+        Cancel
+      </button>
+      <button
+        onClick={handleConfirmDelete}
+        className="px-4 py-2 bg-red-600 text-white rounded"
+      >
+        Delete
+      </button>
+    </>
+  }
+>
+  <p className="mt-2 text-black">Are you sure you want to delete this task?</p>
+</CustomModal>
+      
 
       {/* Add/Edit Task Modal */}
       <CustomModal

@@ -1,21 +1,37 @@
-// use-users.js
+
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import useDebounce from "../../hooks/useDebounce";
+import { fetchUsers } from "../../redux/slices/userSlice";
 import { api } from "../../api/client";
 
 const useUsers = () => {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const currentUser = useSelector((state) => state.users.user);
+
+  // Use Redux state for users and loading
+  const usersList = useSelector((state) => state.users.usersList);
+  const loading = useSelector((state) => state.users.isLoading);
+
   const [search, setSearch] = useState("");
   const [selectedUserTasks, setSelectedUserTasks] = useState([]);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [selectedUserName, setSelectedUserName] = useState("");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
-  const currentUser = useSelector((state) => state.users.user);
   const debouncedSearch = useDebounce(search, 400);
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
+
+  const filteredUsers = usersList.filter(
+    (user) =>
+      (currentUser?.role === "admin" || user.role === "user") &&
+      (user.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+        user.email.toLowerCase().includes(debouncedSearch.toLowerCase()))
+  );
 
   const handleSort = (newSortConfig) => {
     setSortConfig(newSortConfig);
@@ -24,7 +40,6 @@ const useUsers = () => {
   const handleViewTasks = async (userId, userName) => {
     if (currentUser?.role === "admin") {
       try {
-        setLoading(true);
         const response = await api.TASKS.getUserTasks({ userId });
         if (response.data) {
           setSelectedUserTasks(response.data);
@@ -33,8 +48,6 @@ const useUsers = () => {
         }
       } catch (error) {
         console.error("Error fetching user tasks:", error);
-      } finally {
-        setLoading(false);
       }
     } else if (userId === currentUser.id) {
       navigate("/tasks");
@@ -70,7 +83,7 @@ const useUsers = () => {
       label: "Role",
       field_name: "role",
       sortable: true,
-      filterable: true,
+   
       options: ["user", "admin"],
       filterPlaceholder: "Filter by role",
       filterType: "select",
@@ -122,13 +135,17 @@ const useUsers = () => {
       id: "description",
       label: "Description",
       field_name: "description",
-      render: ({ row }) => <span className="text-gray-600">{row.description}</span>,
+      render: ({ row }) => (
+        <span className="text-gray-600">{row.description}</span>
+      ),
     },
     {
       id: "dueDate",
       label: "Due Date",
       field_name: "dueDate",
-      render: ({ row }) => <span>{new Date(row.dueDate).toLocaleDateString()}</span>,
+      render: ({ row }) => (
+        <span>{new Date(row.dueDate).toLocaleDateString()}</span>
+      ),
     },
     {
       id: "status",
@@ -154,53 +171,8 @@ const useUsers = () => {
     },
   ];
 
-  const fetchUsers = async () => {
-    try {
-      setLoading(true);
-      const response = await api.USERS.getAll();
-      if (response.data) {
-        setUsers(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-  }, []);
-
-  useEffect(() => {
-    const searchUsers = async () => {
-      if (debouncedSearch) {
-        try {
-          setLoading(true);
-          const response = await api.USERS.getAll();
-          if (response.data) {
-            const filteredUsers = response.data.filter(
-              (user) =>
-                (currentUser.role === "admin" || user.role === "user") &&
-                (user.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-                  user.email.toLowerCase().includes(debouncedSearch.toLowerCase()))
-            );
-            setUsers(filteredUsers);
-          }
-        } catch (error) {
-          console.error("Error searching users:", error);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        fetchUsers();
-      }
-    };
-    searchUsers();
-  }, [debouncedSearch, currentUser.role]);
-
   return {
-    users,
+    users: filteredUsers,
     loading,
     search,
     setSearch,

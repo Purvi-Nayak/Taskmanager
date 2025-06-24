@@ -8,7 +8,8 @@ const initialState = {
   token: null,
   error: null,
   usersList: [] ,
-  admin: null
+  admin: null,
+ 
   
 };
 
@@ -48,11 +49,22 @@ const userSlice = createSlice({
       state.error = null;
     }
   },
-  extraReducers: (builder) => {
-    builder.addCase(fetchUsers.fulfilled, (state, action) => {
+extraReducers: (builder) => {
+  builder
+    .addCase(fetchUsers.pending, (state) => {
+      state.isLoading = true;
+      state.error = null;
+    })
+    .addCase(fetchUsers.fulfilled, (state, action) => {
       state.usersList = action.payload;
+      state.isLoading = false; 
+      state.error = null;
+    })
+    .addCase(fetchUsers.rejected, (state, action) => {
+      state.error = action.error.message;
+      state.isLoading = false; 
     });
-  }
+}
 });
 
 export const { 

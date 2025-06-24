@@ -1,4 +1,3 @@
-// src/pages/tasks/useTask.jsx
 import { useEffect, useMemo, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { api } from "../../api/client";
@@ -8,41 +7,71 @@ import {
   setEditingTask,
   setError,
   updateTask,
+  setLoading,
+  deleteTask,
 } from "../../redux/slices/taskSlice";
 
 export const useTask = () => {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.users.user);
   const editingTask = useSelector((state) => state.tasks.editingTask);
+  const tasks = useSelector((state) => state.tasks.tasks);
+  const loading = useSelector((state) => state.tasks.loading); 
+  const users = useSelector((state) => state.users.usersList);
 
-  const [tasks, setTasks] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [statusFilter, setStatusFilter] = useState("");
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
+
   const debouncedSearch = useDebounce(search, 400);
 
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-    dispatch(setEditingTask(null));
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    dispatch(setEditingTask(null));
-  };
-
-  const handleSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key) {
-      direction = sortConfig.direction === "asc" ? "desc" : "asc";
+  // Fetch tasks for the current user
+  const fetchTasks = async () => {
+    try {
+      dispatch(setLoading(true));
+      const response = await api.TASKS.getUserTasks({ userId: currentUser.id });
+      if (response.data) {
+        dispatch({ type: "tasks/setTasks", payload: response.data });
+      }
+    } catch (error) {
+      dispatch(setError("Error fetching tasks"));
+    } finally {
+      dispatch(setLoading(false));
     }
-    setSortConfig({ key, direction });
   };
 
+  useEffect(() => {
+    if (!isModalOpen && currentUser?.id) fetchTasks();
+    // eslint-disable-next-line
+  }, [isModalOpen, currentUser?.id]);
+
+  // Search logic
+  useEffect(() => {
+    if (!debouncedSearch) {
+      fetchTasks();
+      return;
+    }
+    const searchTasks = async () => {
+      try {
+        dispatch(setLoading(true));
+        const response = await api.TASKS.searchByTitle({
+          data: debouncedSearch,
+        });
+        if (response.data) {
+          dispatch({ type: "tasks/setTasks", payload: response.data });
+        }
+      } catch (err) {
+        dispatch(setError("Search error"));
+      } finally {
+        dispatch(setLoading(false));
+      }
+    };
+    searchTasks();
+    // eslint-disable-next-line
+  }, [debouncedSearch]);
+
+  // Filtering
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
       const user = users.find((u) => u.id === task.userId);
@@ -56,48 +85,16 @@ export const useTask = () => {
     });
   }, [tasks, users, search, statusFilter]);
 
-  const fetchTasks = async () => {
-    try {
-      setLoading(true);
-      const response = await api.TASKS.getUserTasks({ userId: currentUser.id });
-      if (response.data) {
-        setTasks(response.data);
-      }
-    } catch (error) {
-      console.error("Error fetching tasks:", error);
-    } finally {
-      setLoading(false);
-    }
+  // Task actions
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+    dispatch(setEditingTask(null));
   };
 
-  useEffect(() => {
-    if (!isModalOpen) fetchTasks();
-  }, [isModalOpen]);
-
-  useEffect(() => {
-    const searchTasks = async () => {
-      if (debouncedSearch) {
-        try {
-          setLoading(true);
-          const response = await api.TASKS.searchByTitle({
-            data: debouncedSearch,
-          });
-          setTasks(response.data);
-        } catch (err) {
-          console.error("Search error:", err);
-        } finally {
-          setLoading(false);
-        }
-      } else {
-        fetchTasks();
-      }
-    };
-    searchTasks();
-  }, [debouncedSearch]);
-
-  useEffect(() => {
-    fetchTasks();
-  }, [currentUser.id]);
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    dispatch(setEditingTask(null));
+  };
 
   const handleEdit = (task) => {
     dispatch(setEditingTask(task));
@@ -106,6 +103,7 @@ export const useTask = () => {
 
   const handleUpdateTask = async (values) => {
     try {
+      dispatch(setLoading(true));
       const taskData = {
         ...values,
         taskID: values.id,
@@ -117,34 +115,36 @@ export const useTask = () => {
       });
       if (response.data) {
         dispatch(updateTask(response.data));
-        setTasks((prev) =>
-          prev.map((t) => (t.id === editingTask.id ? response.data : t))
-        );
         setIsModalOpen(false);
         dispatch(setEditingTask(null));
         fetchTasks();
       }
     } catch (error) {
-      console.error("Error updating:", error);
+      dispatch(setError("Error updating task"));
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
   const handleAddTask = async (values) => {
     try {
+      dispatch(setLoading(true));
       const newTask = {
         ...values,
         userId: currentUser.id,
         createdAt: new Date().toISOString(),
         dueDate: new Date(values.dueDate).toISOString(),
       };
-      const response = await api.TASKS.getUserTasks({ data: newTask });
+      const response = await api.TASKS.create({ data: newTask });
       if (response.data) {
         dispatch(addTask(response.data));
         setIsModalOpen(false);
         fetchTasks();
       }
     } catch (error) {
-      console.error("Error adding task:", error);
+      dispatch(setError("Error adding task"));
+    } finally {
+      dispatch(setLoading(false));
     }
   };
 
@@ -152,13 +152,25 @@ export const useTask = () => {
 
   const handleConfirmDelete = async () => {
     try {
+      dispatch(setLoading(true));
       await api.TASKS.delete({ id: deleteId });
-      setTasks((prev) => prev.filter((t) => t.id !== deleteId));
-      setDeleteId(null);
-      fetchTasks();
+      dispatch(deleteTask(deleteId)); // Remove from Redux state
+      setDeleteId(null); // Close the dialog
     } catch (err) {
-      console.error("Delete error:", err);
+      dispatch(setError("Delete error"));
+    } finally {
+      dispatch(setLoading(false));
     }
+  };
+
+  // Sorting logic (if needed)
+  const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
+  const handleSort = (key) => {
+    let direction = "asc";
+    if (sortConfig.key === key) {
+      direction = sortConfig.direction === "asc" ? "desc" : "asc";
+    }
+    setSortConfig({ key, direction });
   };
 
   return {
@@ -178,6 +190,7 @@ export const useTask = () => {
     handleAddTask,
     deleteId,
     handleDelete,
+setDeleteId,
     handleConfirmDelete,
     handleSort,
     sortConfig,

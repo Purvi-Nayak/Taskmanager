@@ -1,4 +1,3 @@
-
 import React from "react";
 import CustomButton from "../../shared/custombutton";
 import CustomModal from "../../shared/custommodal";
@@ -62,7 +61,6 @@ const AdminDashboard = () => {
     {
       id: "actions",
       label: "Actions",
-
       render: ({ row }) => (
         <div className="px-6 py-4 flex justify-end">
           <CustomMenuButton
