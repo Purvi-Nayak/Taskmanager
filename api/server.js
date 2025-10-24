@@ -1,29 +1,30 @@
-// import jsonServer from 'json-server';
+import jsonServer from 'json-server';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-export default function handler(req, res) {
-  const server = jsonServer.create();
-  const router = jsonServer.router(path.join(__dirname, 'db.json'));
-  const middlewares = jsonServer.defaults({
-    noCors: false
-  });
+const server = jsonServer.create();
+const router = jsonServer.router(path.join(__dirname, 'db.json'));
+const middlewares = jsonServer.defaults({
+  noCors: false
+});
 
-  // CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
+// CORS middleware
+server.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 
   if (req.method === 'OPTIONS') {
-    res.status(200).end();
-    return;
+    res.sendStatus(200);
+  } else {
+    next();
   }
+});
 
-  server.use(middlewares);
-  server.use('/api', router);
+server.use(middlewares);
+server.use(router);
 
-  server(req, res);
-}
+export default server;
