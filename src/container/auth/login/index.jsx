@@ -82,7 +82,7 @@ const Login = () => {
       <CustomModal
         isOpen={alertOpen}
         onClose={() => setAlertOpen(false)}
-        title={isSuccess ? "Login Successful" : "Login Failed"}
+        title={isSuccess ? "Login Successfull" : "Login Failed"}
         contentClass="p-4"
         overlayClass="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
         showCloseIcon={true}

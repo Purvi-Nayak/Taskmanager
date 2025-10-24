@@ -1,24 +1,20 @@
 import { Route, Routes } from "react-router-dom";
 import PublicLayout from "../layout/public-layout";
 import PrivateLayout from "../layout/private-layout";
-import useRoute from "../hooks/useroutes";
-import NotFoundPage from "../pages/not-foundpage"
+import useRoute from "../hooks/useRoutes";
+import NotFoundPage from "../pages/not-foundpage";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Routing = () => {
   const { privateRoutes, publicRoutes } = useRoute();
-    const user = useSelector(state => state.users.user);
-  const isAdmin = user?.role === 'admin';
+  const user = useSelector((state) => state.users.user);
+  const isAdmin = user?.role === "admin";
   return (
     <>
       <Routes>
-
-            {isAdmin && (
-          <Route 
-            path="/" 
-            element={<Navigate to="/admin" replace />} 
-          />
+        {isAdmin && (
+          <Route path="/" element={<Navigate to="/admin" replace />} />
         )}
         <Route path="*" element={<NotFoundPage />} />
 
