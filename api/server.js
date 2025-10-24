@@ -27,4 +27,13 @@ server.use((req, res, next) => {
 server.use(middlewares);
 server.use(router);
 
+// For local development
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 3000;
+  server.listen(PORT, () => {
+    console.log(`JSON Server is running on port ${PORT}`);
+  });
+}
+
+// For Vercel deployment
 export default server;

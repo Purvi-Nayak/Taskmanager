@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "json-server --watch db.json --port 3000",
-    "start": "node server.js"
+    "server": "json-server --watch api/db.json --port 3000",
+    "start": "node api/server.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
