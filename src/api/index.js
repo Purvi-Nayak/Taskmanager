@@ -3,9 +3,13 @@ import { store } from '../redux/store';
 import { METHODS } from "../constant";
 
 // API URL configuration for development and production
-const API_URL = process.env.NODE_ENV === 'production'
+// Use /api for production (Vercel) or if we're not on localhost
+const API_URL = process.env.NODE_ENV === 'production' ||
+  (typeof window !== 'undefined' && !window.location.hostname.includes('localhost'))
   ? '/api'
   : 'http://localhost:3000';
+
+console.log('API_URL:', API_URL); // Debug log
 
 const api = axios.create({
   baseURL: API_URL,

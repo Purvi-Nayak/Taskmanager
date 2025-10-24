@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Create the server and router
 const server = jsonServer.create();
 const router = jsonServer.router(path.join(__dirname, 'db.json'));
 const middlewares = jsonServer.defaults({
@@ -28,12 +29,15 @@ server.use(middlewares);
 server.use(router);
 
 // For local development
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== 'production' && process.env.VERCEL !== '1') {
   const PORT = process.env.PORT || 3000;
   server.listen(PORT, () => {
     console.log(`JSON Server is running on port ${PORT}`);
   });
 }
 
-// For Vercel deployment
-export default server;
+// For Vercel deployment - export as a function
+export default function handler(req, res) {
+  console.log('API Request:', req.method, req.url); // Debug log
+  return server(req, res);
+}
