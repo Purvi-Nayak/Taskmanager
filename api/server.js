@@ -17,7 +17,9 @@ server.use((req, res, next) => {
 });
 
 server.use(middlewares);
-server.use('/api', router);
+server.use(router);
 
-// Export for Vercel
-export default server;
+// Export as Vercel serverless function
+export default (req, res) => {
+  server(req, res);
+};
