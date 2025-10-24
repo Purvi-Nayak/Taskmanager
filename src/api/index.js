@@ -2,13 +2,17 @@ import axios from "axios";
 import { store } from '../redux/store';
 import { METHODS } from "../constant";
 
+// API URL configuration for development and production
+const API_URL = process.env.NODE_ENV === 'production'
+  ? '/api'
+  : 'http://localhost:3000';
 
 const api = axios.create({
-    baseURL: 'http://localhost:3000',
-    headers: {
-        'Content-Type': 'application/json'
-    },
-    timeout: 5000
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json'
+  },
+  timeout: 5000
 });
 // In api/index.jsx
 api.interceptors.request.use(
@@ -26,26 +30,26 @@ api.interceptors.request.use(
 );
 
 api.interceptors.response.use(
-    (response) => response,
-    (error) => {
-        // Handle specific error cases
-        if (error.response?.status === 401) {
-            // Handle unauthorized access
-            store.dispatch({ type: 'users/logout' });
-        }
-        return Promise.reject(error);
+  (response) => response,
+  (error) => {
+    // Handle specific error cases
+    if (error.response?.status === 401) {
+      // Handle unauthorized access
+      store.dispatch({ type: 'users/logout' });
     }
+    return Promise.reject(error);
+  }
 );
 
 const client = ({ method = METHODS.GET, url = '', withCredentials = false, auth, data, ...otherParams }) => {
-    return api({
-        method,
-        url,
-        withCredentials,
-        auth,
-        data,
-        ...otherParams
-    });
+  return api({
+    method,
+    url,
+    withCredentials,
+    auth,
+    data,
+    ...otherParams
+  });
 }
 
 export default client;
